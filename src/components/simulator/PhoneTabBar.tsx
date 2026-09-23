@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScreenId } from '../../types';
+import { useLanguage } from '../../context/LanguageContext';
 import { Home, BarChart3, Layers, Scale, CheckSquare } from 'lucide-react';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export const PhoneTabBar: React.FC<Props> = ({ currentScreenId, onSelectScreen }) => {
+  const { t } = useLanguage();
+
   // Whether current screen is one of the registration forms
   const isRegisterScreen = [
     'SCREEN_13', // 5. Producción
@@ -33,7 +36,7 @@ export const PhoneTabBar: React.FC<Props> = ({ currentScreenId, onSelectScreen }
         title="1. Inicio - Bienvenida"
       >
         <Home className={`w-5 h-5 ${currentScreenId === 'SCREEN_2' ? 'stroke-[2.5]' : ''}`} />
-        <span className="text-[11px] mt-0.5 font-bold">Inicio</span>
+        <span className="text-[11px] mt-0.5 font-bold">{t.tabHome}</span>
       </button>
 
       {/* 2. Finca */}
@@ -45,7 +48,7 @@ export const PhoneTabBar: React.FC<Props> = ({ currentScreenId, onSelectScreen }
         title="2. Finca - Panel Central"
       >
         <BarChart3 className={`w-5 h-5 ${currentScreenId === 'SCREEN_21' ? 'stroke-[2.5]' : ''}`} />
-        <span className="text-[11px] mt-0.5 font-bold">Finca</span>
+        <span className="text-[11px] mt-0.5 font-bold">{t.tabFarm}</span>
       </button>
 
       {/* 3. Lotes */}
@@ -54,10 +57,10 @@ export const PhoneTabBar: React.FC<Props> = ({ currentScreenId, onSelectScreen }
         className={`flex flex-col items-center justify-center min-h-[48px] py-1 cursor-pointer transition-colors rounded-xl ${
           isLotsScreen ? 'text-coffee-950 font-black' : 'text-coffee-500 hover:text-coffee-800'
         }`}
-        title="3. Lotes - Catastro y Fichas"
+        title="3. Lotes - Nombre de Lotes y Fichas"
       >
         <Layers className={`w-5 h-5 ${isLotsScreen ? 'stroke-[2.5]' : ''}`} />
-        <span className="text-[11px] mt-0.5 font-bold">Lotes</span>
+        <span className="text-[11px] mt-0.5 font-bold">{t.tabLots}</span>
       </button>
 
       {/* 4. Registro */}
@@ -69,7 +72,7 @@ export const PhoneTabBar: React.FC<Props> = ({ currentScreenId, onSelectScreen }
         title="4. Registro - Báscula y Asientos"
       >
         <Scale className={`w-5 h-5 ${isRegisterScreen ? 'stroke-[2.5]' : ''}`} />
-        <span className="text-[11px] mt-0.5 font-bold">Registro</span>
+        <span className="text-[11px] mt-0.5 font-bold">{t.tabRecord}</span>
       </button>
 
       {/* 5. Agenda */}
@@ -81,7 +84,7 @@ export const PhoneTabBar: React.FC<Props> = ({ currentScreenId, onSelectScreen }
         title="5. Agenda - Tareas y Pendientes"
       >
         <CheckSquare className={`w-5 h-5 ${currentScreenId === 'SCREEN_9' ? 'stroke-[2.5]' : ''}`} />
-        <span className="text-[11px] mt-0.5 font-bold">Agenda</span>
+        <span className="text-[11px] mt-0.5 font-bold">{t.tabAgenda}</span>
       </button>
     </div>
   );

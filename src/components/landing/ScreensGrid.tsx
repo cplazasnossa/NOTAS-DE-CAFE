@@ -40,8 +40,6 @@ export const ScreensGrid: React.FC<Props> = ({ onSelectScreenCard }) => {
             badgeBg = 'bg-amber-100 text-amber-900';
           } else if (screen.badgeType === 'dashboard' || screen.badgeType === 'cosecha' || screen.badgeType === 'sanidad') {
             badgeBg = 'bg-leaf-100 text-leaf-700';
-          } else if (screen.badgeType === 'acceso') {
-            badgeBg = 'bg-coffee-800 text-amber-200';
           }
 
           return (

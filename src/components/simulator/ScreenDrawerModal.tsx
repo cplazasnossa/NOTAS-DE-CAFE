@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScreenId } from '../../types';
 import { SCREENS_DATA } from '../../data/mockData';
+import { useLanguage } from '../../context/LanguageContext';
 import { X } from 'lucide-react';
 
 interface Props {
@@ -16,6 +17,8 @@ export const ScreenDrawerModal: React.FC<Props> = ({
   onSelectScreen,
   onClose
 }) => {
+  const { t } = useLanguage();
+
   if (!isOpen) return null;
 
   return (
@@ -23,8 +26,10 @@ export const ScreenDrawerModal: React.FC<Props> = ({
       <div className="bg-white rounded-3xl p-5 max-w-sm w-full max-h-[85vh] overflow-y-auto space-y-3 shadow-2xl border border-coffee-200">
         <div className="flex items-center justify-between pb-2 border-b border-coffee-100">
           <div>
-            <h3 className="text-sm font-bold text-coffee-900">Ecosistema Completo de 10 Pantallas</h3>
-            <p className="text-[11px] text-coffee-500">Haz clic en cualquier pantalla para ir a ella</p>
+            <h3 className="text-sm font-bold text-coffee-900">{t.allScreens}</h3>
+            <p className="text-[11px] text-coffee-500">
+              {t.allScreens.includes('9') ? '9 Pantallas' : '9 Screens'}
+            </p>
           </div>
           <button
             onClick={onClose}

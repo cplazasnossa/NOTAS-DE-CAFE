@@ -1,3 +1,5 @@
+export type Language = 'es' | 'en';
+
 export type ScreenId =
   | 'SCREEN_2'   // 1. Bienvenida · Inicio de Jornada
   | 'SCREEN_21'  // 2. Mi Finca (Panel Central)
@@ -7,42 +9,14 @@ export type ScreenId =
   | 'SCREEN_11'  // 6. Registrar Costo
   | 'SCREEN_17'  // 7. Registrar Actividad
   | 'SCREEN_15'  // 8. Registrar Observación
-  | 'SCREEN_9'   // 9. Registrar Pendiente
-  | 'SCREEN_LOGIN'; // 10. Ingreso & Suscripción de Pago
-
-export interface FarmRepresentative {
-  id: string;
-  name: string;
-  role: string;
-  email: string;
-  passwordHint: string;
-  phone: string;
-  badge: string;
-  avatarColor: string;
-  avatarInitials: string;
-  permissions: string[];
-  planType: string;
-  planStatus: 'Activo' | 'Periodo de Gracia' | 'Pendiente de Pago';
-  daysLeft: number;
-}
-
-export interface SubscriptionPlan {
-  id: string;
-  name: string;
-  priceCop: number;
-  period: string;
-  description: string;
-  features: string[];
-  popular?: boolean;
-  maxRepresentatives: number;
-}
+  | 'SCREEN_9';  // 9. Registrar Pendiente
 
 export interface ScreenInfo {
   id: ScreenId;
   number: number;
   name: string;
   badge: string;
-  badgeType: 'apertura' | 'dashboard' | 'catastro' | 'detalle' | 'cosecha' | 'finanzas' | 'labores' | 'sanidad' | 'agenda' | 'acceso';
+  badgeType: 'apertura' | 'dashboard' | 'catastro' | 'detalle' | 'cosecha' | 'finanzas' | 'labores' | 'sanidad' | 'agenda';
   shell: string;
   subtitle: string;
   title: string;

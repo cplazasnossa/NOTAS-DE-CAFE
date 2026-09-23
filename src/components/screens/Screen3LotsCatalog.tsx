@@ -8,6 +8,7 @@ import { NewLotModal } from './lots/NewLotModal';
 import { LotCard } from './lots/LotCard';
 import { LotFiltersBar } from './lots/LotFiltersBar';
 import { useLotFilters } from '../../hooks/useLotFilters';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -24,6 +25,8 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { filter, setFilter, search, setSearch, filteredLots, counts, resetFilters } = useLotFilters(lots);
+  const { language } = useLanguage();
+  const isEn = language === 'en';
 
   const handleSelectLot = (lot: CoffeeLot) => {
     if (onSelectLot) {
@@ -49,12 +52,11 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Encabezado principal */}
       <ScreenHeader
-        title="Catastro de Lotes"
-        subtitle="Manejo agronómico, variedades y maduración"
-        category="Catastro Agronómico"
+        title={isEn ? "Lot Names" : "Nombre de Lotes"}
+        subtitle={isEn ? "Agronomic management, varieties and maturity" : "Manejo agronómico, variedades y maduración"}
         showBack={true}
         onBack={() => onNavigate('SCREEN_21')}
-        backLabel="Volver a Mi Finca"
+        backLabel={isEn ? "Back to Farm" : "Volver a Mi Finca"}
         icon={<Layers className="w-5 h-5 text-coffee-800" />}
       />
 

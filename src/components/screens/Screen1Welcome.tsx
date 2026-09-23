@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { ScreenId, FarmRepresentative } from '../../types';
+import { ScreenId } from '../../types';
 import { HERO_IMAGE_URL } from '../../data/mockData';
 import { SafeImage } from '../BrandAssets';
-import { Sun, CheckCircle2, ChevronRight, MapPin, Feather, Sparkles, UserCheck } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
+import { Sun, CheckCircle2, ChevronRight, MapPin, Feather } from 'lucide-react';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
   isOffline?: boolean;
-  activeRepresentative?: FarmRepresentative;
 }
 
-export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeRepresentative }) => {
+export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline }) => {
   const [morningNote, setMorningNote] = useState('');
   const [noteSaved, setNoteSaved] = useState(false);
-
-  const repName = activeRepresentative?.name.split(' ')[0] || 'Don Carlos';
-  const repRole = activeRepresentative?.role.split('&')[0] || 'Propietario';
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   const handleSaveNote = () => {
     if (morningNote.trim()) {
@@ -36,20 +35,11 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#FAF6F0] via-coffee-900/50 to-coffee-900/20" />
         
-        {/* Top Floating Badge Bar */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-          <button
-            type="button"
-            onClick={() => onNavigate('SCREEN_LOGIN')}
-            className="bg-white/95 hover:bg-white text-coffee-900 px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow-sm flex items-center gap-1.5 cursor-pointer transition-all"
-            title="Ver representante y membresía de pago"
-          >
-            <UserCheck className="w-3.5 h-3.5 text-coffee-800" />
-            <span>{repName} · {activeRepresentative?.planStatus || 'Activo'}</span>
-          </button>
-          <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold text-white shadow-sm flex items-center gap-1.5 ${isOffline ? 'bg-amber-700' : 'bg-leaf-600'}`}>
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            {isOffline ? 'Modo Offline' : 'Sincronizado'}
+        {/* Top Floating Harvest Status Pill */}
+        <div className="absolute top-3 left-4 right-4 flex items-center justify-between z-10">
+          <span className="bg-[#2A150B]/85 backdrop-blur-xs text-[#FAF5EE] border border-[#5A311B]/60 px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide shadow-sm flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-leaf-500 animate-pulse" />
+            <span>Cosecha 2024 · Lote La Loma</span>
           </span>
         </div>
 
@@ -58,15 +48,15 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#FAF6F0]/95 backdrop-blur-xs border border-coffee-300/90 mb-1.5 shadow-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#140702]" />
             <p className="text-[11px] sm:text-xs uppercase font-black tracking-wider text-[#140702]">
-              EL CUADERNO DIGITAL DE TU FINCA
+              {isEn ? 'THE DIGITAL NOTEBOOK FOR YOUR FARM' : 'EL CUADERNO DIGITAL DE TU FINCA'}
             </p>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-extrabold text-[#140702] leading-tight">
-            ¡Buenos días, {repName}!
+            {t.welcomeTitle}
           </h2>
           <div className="flex items-center gap-2 text-xs text-[#2A140A] mt-1 font-bold">
             <MapPin className="w-3.5 h-3.5 text-coffee-800 shrink-0" />
-            <span>Finca El Manantial · {repRole}</span>
+            <span>{t.welcomeCaption}</span>
           </div>
         </div>
       </div>
@@ -81,15 +71,21 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-base font-bold text-coffee-900">21°C · Favorable</span>
-                <span className="text-[10px] bg-leaf-100 text-leaf-700 px-1.5 py-0.5 rounded font-bold">Óptimo</span>
+                <span className="text-base font-bold text-coffee-900">{t.welcomeWeatherTitle}</span>
+                <span className="text-[10px] bg-leaf-100 text-leaf-700 px-1.5 py-0.5 rounded font-bold">
+                  {isEn ? 'Optimal' : 'Óptimo'}
+                </span>
               </div>
-              <p className="text-xs text-coffee-600">Condición ideal para recolección en lote La Loma</p>
+              <p className="text-xs text-coffee-600">{t.welcomeWeatherDesc}</p>
             </div>
           </div>
           <div className="text-right border-l border-coffee-100 pl-3 shrink-0">
-            <span className="text-xs font-bold text-coffee-800 block">14 Octubre</span>
-            <span className="text-[11px] text-coffee-500">Semana 41</span>
+            <span className="text-xs font-bold text-coffee-800 block">
+              {isEn ? 'Oct 14' : '14 Octubre'}
+            </span>
+            <span className="text-[11px] text-coffee-500">
+              {isEn ? 'Week 41' : 'Semana 41'}
+            </span>
           </div>
         </div>
 
@@ -99,16 +95,16 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
             onClick={() => onNavigate('SCREEN_19')}
             className="bg-white p-3 rounded-xl border border-coffee-200 text-center hover:border-coffee-500 transition-colors cursor-pointer text-left"
           >
-            <span className="text-[11px] text-coffee-500 block">Lotes Activos</span>
-            <span className="text-lg font-bold text-coffee-900">4 Lotes</span>
-            <span className="text-[10px] text-leaf-600 font-semibold block mt-0.5">18.5 ha totales</span>
+            <span className="text-[11px] text-coffee-500 block">{isEn ? 'Active Lots' : 'Lotes Activos'}</span>
+            <span className="text-lg font-bold text-coffee-900">{isEn ? '4 Lots' : '4 Lotes'}</span>
+            <span className="text-[10px] text-leaf-600 font-semibold block mt-0.5">{isEn ? '18.5 total ha' : '18.5 ha totales'}</span>
           </button>
 
           <button
             onClick={() => onNavigate('SCREEN_23')}
             className="bg-white p-3 rounded-xl border border-coffee-200 text-center hover:border-coffee-500 transition-colors cursor-pointer text-left"
           >
-            <span className="text-[11px] text-coffee-500 block">Corte Actual</span>
+            <span className="text-[11px] text-coffee-500 block">{isEn ? 'Current Lot' : 'Corte Actual'}</span>
             <span className="text-lg font-bold text-coffee-900">Geisha</span>
             <span className="text-[10px] text-amber-700 font-semibold block mt-0.5">Brix 24.2°</span>
           </button>
@@ -117,9 +113,9 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
             onClick={() => onNavigate('SCREEN_9')}
             className="bg-white p-3 rounded-xl border border-coffee-200 text-center hover:border-coffee-500 transition-colors cursor-pointer text-left"
           >
-            <span className="text-[11px] text-coffee-500 block">Tareas Hoy</span>
-            <span className="text-lg font-bold text-coffee-900">3 Pend.</span>
-            <span className="text-[10px] text-cherry font-semibold block mt-0.5">1 Crítica</span>
+            <span className="text-[11px] text-coffee-500 block">{isEn ? 'Tasks Today' : 'Tareas Hoy'}</span>
+            <span className="text-lg font-bold text-coffee-900">{isEn ? '3 Pend.' : '3 Pend.'}</span>
+            <span className="text-[10px] text-cherry font-semibold block mt-0.5">{isEn ? '1 High' : '1 Crítica'}</span>
           </button>
         </div>
 
@@ -129,12 +125,12 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
             <div className="flex items-center gap-2">
               <Feather className="w-4 h-4 text-coffee-700" />
               <span className="text-xs font-bold uppercase tracking-wider text-coffee-800">
-                Apunte Rápido Matutino
+                {t.welcomeQuickNoteTitle}
               </span>
             </div>
             {noteSaved && (
               <span className="text-xs font-semibold text-leaf-600 flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Guardado en libreta
+                <CheckCircle2 className="w-3.5 h-3.5" /> {t.welcomeNoteSaved}
               </span>
             )}
           </div>
@@ -143,14 +139,14 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
               type="text"
               value={morningNote}
               onChange={(e) => setMorningNote(e.target.value)}
-              placeholder="Ej: Iniciar recolección por ladera norte..."
+              placeholder={t.welcomeQuickNotePlaceholder}
               className="flex-1 text-xs px-3 py-2 rounded-xl bg-white border border-coffee-200 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 focus:ring-coffee-700"
             />
             <button
               onClick={handleSaveNote}
-              className="px-3 py-2 bg-coffee-800 text-white rounded-xl text-xs font-bold hover:bg-coffee-900 transition-colors shrink-0"
+              className="px-3 py-2 bg-coffee-800 text-white rounded-xl text-xs font-bold hover:bg-coffee-900 transition-colors shrink-0 cursor-pointer"
             >
-              Anotar
+              {t.welcomeSaveNote}
             </button>
           </div>
         </div>
@@ -161,11 +157,11 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline, activeR
             onClick={() => onNavigate('SCREEN_21')}
             className="w-full min-h-[52px] bg-coffee-800 hover:bg-coffee-900 text-white rounded-2xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-coffee-800/15 transition-all active:scale-[0.98] cursor-pointer"
           >
-            <span>Iniciar Jornada en la Finca</span>
+            <span>{t.welcomeStartWorkday}</span>
             <ChevronRight className="w-5 h-5 text-amber-200" />
           </button>
           <p className="text-center text-[11px] text-coffee-500 mt-2">
-            Persistencia local automática · 100% libre de cobertura celular
+            {isEn ? 'Automatic local persistence · 100% cellular coverage-free' : 'Persistencia local automática · 100% libre de cobertura celular'}
           </p>
         </div>
       </div>

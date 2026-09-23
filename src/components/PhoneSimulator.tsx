@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ScreenId, CoffeeLot, FarmRepresentative } from '../types';
-import { SCREENS_DATA, INITIAL_LOTS, FARM_REPRESENTATIVES } from '../data/mockData';
+import { ScreenId, CoffeeLot } from '../types';
+import { SCREENS_DATA, INITIAL_LOTS } from '../data/mockData';
 import { Screen1Welcome } from './screens/Screen1Welcome';
 import { Screen2Dashboard } from './screens/Screen2Dashboard';
 import { Screen3LotsCatalog } from './screens/Screen3LotsCatalog';
@@ -10,7 +10,6 @@ import { Screen6RegisterCost } from './screens/Screen6RegisterCost';
 import { Screen7RegisterActivity } from './screens/Screen7RegisterActivity';
 import { Screen8RegisterObservation } from './screens/Screen8RegisterObservation';
 import { Screen9RegisterTask } from './screens/Screen9RegisterTask';
-import { Screen10LoginAndSubscription } from './screens/Screen10LoginAndSubscription';
 import { SimulatorTopBar } from './simulator/SimulatorTopBar';
 import { PhoneStatusBar } from './simulator/PhoneStatusBar';
 import { PhoneTabBar } from './simulator/PhoneTabBar';
@@ -37,8 +36,6 @@ export const PhoneSimulator: React.FC<Props> = ({
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [lots, setLots] = useState<CoffeeLot[]>(INITIAL_LOTS);
   const [selectedLot, setSelectedLot] = useState<CoffeeLot>(INITIAL_LOTS[0]);
-  const [activeRepresentative, setActiveRepresentative] = useState<FarmRepresentative>(FARM_REPRESENTATIVES[0]);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const currentScreenInfo = SCREENS_DATA.find((s) => s.id === currentScreenId) || SCREENS_DATA[0];
   const currentIndex = SCREENS_DATA.findIndex((s) => s.id === currentScreenId);
@@ -60,7 +57,6 @@ export const PhoneSimulator: React.FC<Props> = ({
           <Screen1Welcome
             onNavigate={onSelectScreen}
             isOffline={isOffline}
-            activeRepresentative={activeRepresentative}
           />
         );
       case 'SCREEN_21':
@@ -86,22 +82,11 @@ export const PhoneSimulator: React.FC<Props> = ({
         return <Screen8RegisterObservation onNavigate={onSelectScreen} />;
       case 'SCREEN_9':
         return <Screen9RegisterTask onNavigate={onSelectScreen} />;
-      case 'SCREEN_LOGIN':
-        return (
-          <Screen10LoginAndSubscription
-            onNavigate={onSelectScreen}
-            activeRepresentative={activeRepresentative}
-            onUpdateActiveRepresentative={setActiveRepresentative}
-            isAuthenticated={isAuthenticated}
-            onSetAuthenticated={setIsAuthenticated}
-          />
-        );
       default:
         return (
           <Screen1Welcome
             onNavigate={onSelectScreen}
             isOffline={isOffline}
-            activeRepresentative={activeRepresentative}
           />
         );
     }
@@ -112,8 +97,6 @@ export const PhoneSimulator: React.FC<Props> = ({
       {/* 1. External Simulator Control Toolbar */}
       <SimulatorTopBar
         currentScreenInfo={currentScreenInfo}
-        activeRepresentative={activeRepresentative}
-        onOpenLogin={() => onSelectScreen('SCREEN_LOGIN')}
         onPrev={handlePrevScreen}
         onNext={handleNextScreen}
         onOpenDrawer={() => setDrawerOpen(true)}

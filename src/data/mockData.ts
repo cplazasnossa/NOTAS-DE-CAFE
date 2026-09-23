@@ -1,4 +1,4 @@
-import { ScreenInfo, CoffeeLot, HarvestRecord, ExpenseRecord, CulturalActivity, PhytosanitaryAlert, FarmTask, FarmRepresentative, SubscriptionPlan } from '../types';
+import { ScreenInfo, CoffeeLot, HarvestRecord, ExpenseRecord, CulturalActivity, PhytosanitaryAlert, FarmTask } from '../types';
 
 export const HERO_IMAGE_URL = 'https://lh3.googleusercontent.com/aida/AEtjO1XACcZElquq7eChb7uFvDEY4o-MOsvqMLfRGvQiIjJ1yPq3LTorqAdJ99xP7vFF6M5ds8l7tUuRg3H_B_EuDzTLl_cARrJFwn8HJwxECxiZJnie6ZviZ4xquYosd-_0UsVnDOqGBjEKSQl9eVQoAWAQ5wCetqIQygwXfuw0dK_AIGhekFqcJWVU0bpW7egXQJ_DKbTNAjBVIWdmQmCvANHRE5KEA-AX8kBHv7HEkfXi6TNRicoDEIiwYkQ';
 export const LOGO_LINEAL_URL = 'https://lh3.googleusercontent.com/aida/AEtjO1V7E8CkJn9DWcoC_Y60kKdltpbAVJmbeDI5Jn0-5tQEzwG21y2VOXo8ZDu1E76U0wIdjhMvyuruHGkyFE3Jqj_Ih0WDRhXmVvvnlLDe-GpSFgeMpY0RRLOYUOr0Aymi1ozy3FzKWwD4oz7LRnEkWHa0LDC3Okm0xxOZHUJCOnZqCWOLIYERlNAAdfkTdvFlAzRbEpe12tbIwuOtwH0KjdIkn07hKzgeD2TSIZ4tcTjWBi9BMpLHlHPtr90';
@@ -59,8 +59,8 @@ export const SCREENS_DATA: ScreenInfo[] = [
   {
     id: 'SCREEN_19',
     number: 3,
-    name: '3. Mis Lotes',
-    badge: 'Catastro',
+    name: '3. Nombre de Lotes',
+    badge: 'Lotes',
     badgeType: 'catastro',
     status: '● 4 Lotes',
     shell: 'Shell Tab Bar',
@@ -229,31 +229,6 @@ export const SCREENS_DATA: ScreenInfo[] = [
     s3Label: 'Taller',
     s3Val: 'Revisión',
     actionText: 'Agregar Nueva Tarea →',
-    bgImg: HERO_IMAGE_URL
-  },
-  {
-    id: 'SCREEN_LOGIN',
-    number: 10,
-    name: '10. Ingreso & Suscripción de Pago',
-    badge: 'Acceso',
-    badgeType: 'acceso',
-    status: '● Protección',
-    shell: 'Auth & Checkout',
-    subtitle: 'Control de Representantes',
-    title: 'Ingreso & Suscripción Cafetera',
-    caption: 'Finca El Manantial · Acceso Protegido',
-    description: 'Pantalla de autenticación para representantes de la finca (Propietario, Mayordomo, Calidad, Capataz) con credenciales y gestión de membresía de pago por suscripción.',
-    metricIcon: '🔐',
-    metricPrimary: 'Acceso por Rol',
-    metricSecondary: 'Plan Finca Activo',
-    metricDate: 'Suscripción',
-    s1Label: 'Perfiles',
-    s1Val: '4 Repr.',
-    s2Label: 'Plan',
-    s2Val: 'Familiar',
-    s3Label: 'Vigencia',
-    s3Val: '28 días',
-    actionText: 'Ingresar al Cuaderno →',
     bgImg: HERO_IMAGE_URL
   }
 ];
@@ -511,115 +486,3 @@ export const INITIAL_TASKS: FarmTask[] = [
   }
 ];
 
-export const FARM_REPRESENTATIVES: FarmRepresentative[] = [
-  {
-    id: 'rep-1',
-    name: 'Don Carlos Plazas',
-    role: 'Propietario & Administrador',
-    email: 'carlos@elmanantial.co',
-    passwordHint: 'cafetal2024',
-    phone: '+57 312 458 9201',
-    badge: 'Administrador Principal',
-    avatarColor: 'bg-coffee-800 text-amber-200',
-    avatarInitials: 'CP',
-    permissions: ['Control Total', 'Finanzas & Costos', 'Catastro de Lotes', 'Liquidación', 'Configuración'],
-    planType: 'Plan Finca Familiar & Cuadrilla',
-    planStatus: 'Activo',
-    daysLeft: 28
-  },
-  {
-    id: 'rep-2',
-    name: 'Wilson Cañas',
-    role: 'Mayordomo & Jefe de Beneficiadero',
-    email: 'wilson@elmanantial.co',
-    passwordHint: 'mayordomo123',
-    phone: '+57 314 782 1190',
-    badge: 'Operaciones de Campo',
-    avatarColor: 'bg-leaf-800 text-leaf-100',
-    avatarInitials: 'WC',
-    permissions: ['Pesaje en Báscula', 'Control de Tolvas', 'Secado en Marquesinas', 'Cuadrillas'],
-    planType: 'Plan Finca Familiar & Cuadrilla',
-    planStatus: 'Activo',
-    daysLeft: 28
-  },
-  {
-    id: 'rep-3',
-    name: 'María Gómez',
-    role: 'Supervisora de Calidad y Cosecha',
-    email: 'maria@elmanantial.co',
-    passwordHint: 'calidad2024',
-    phone: '+57 320 663 4402',
-    badge: 'Calidad & Taza',
-    avatarColor: 'bg-amber-700 text-white',
-    avatarInitials: 'MG',
-    permissions: ['Muestreos °Brix', 'Monitoreo Fitosanitario', 'Inspección de Cereza', 'Registro de Rendimiento'],
-    planType: 'Plan Finca Familiar & Cuadrilla',
-    planStatus: 'Activo',
-    daysLeft: 28
-  },
-  {
-    id: 'rep-4',
-    name: 'Jairo Ospina',
-    role: 'Capataz de Cuadrilla y Labores',
-    email: 'jairo@elmanantial.co',
-    passwordHint: 'campo123',
-    phone: '+57 311 905 3318',
-    badge: 'Labores Agronómicas',
-    avatarColor: 'bg-rose-900 text-rose-100',
-    avatarInitials: 'JO',
-    permissions: ['Labores Agronómicas', 'Plateo y Podas', 'Fertilización', 'Agenda de Jornaleros'],
-    planType: 'Plan Finca Familiar & Cuadrilla',
-    planStatus: 'Activo',
-    daysLeft: 28
-  }
-];
-
-export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
-  {
-    id: 'plan-basic',
-    name: 'Plan Cafetero Individual',
-    priceCop: 35000,
-    period: 'mes',
-    description: 'Para productores independientes que gestionan su propio cuaderno de campo.',
-    maxRepresentatives: 1,
-    features: [
-      '1 Representante de finca',
-      'Cuaderno de campo 100% offline',
-      'Registro diario de báscula y arrobas',
-      'Catastro de hasta 3 lotes',
-      'Sincronización automática al conectar'
-    ]
-  },
-  {
-    id: 'plan-family',
-    name: 'Plan Finca Familiar & Cuadrilla',
-    priceCop: 79000,
-    period: 'mes',
-    popular: true,
-    description: 'El más elegido por fincas cafeteras con mayordomo, supervisor y cuadrillas.',
-    maxRepresentatives: 5,
-    features: [
-      'Hasta 5 representantes con usuarios y claves',
-      'Perfiles: Propietario, Mayordomo, Calidad y Capataz',
-      'Lotes ilimitados con curvas °Brix y floración',
-      'Control de costos y jornales por cuadrilla',
-      'Alertas de broca/roya con registro fotográfico',
-      'Soporte prioritario por WhatsApp'
-    ]
-  },
-  {
-    id: 'plan-coop',
-    name: 'Plan Cooperativa / Exportador',
-    priceCop: 180000,
-    period: 'mes',
-    description: 'Para fincas de especialidad y asociaciones con exportación directa.',
-    maxRepresentatives: 15,
-    features: [
-      'Representantes ilimitados con roles personalizados',
-      'Trazabilidad lote por lote con QR de exportación',
-      'Módulo de microlotes y perfiles de catación SCA',
-      'Reportes para certificación Rainforest & Fairtrade',
-      'Exportación en Excel y PDF contable'
-    ]
-  }
-];
