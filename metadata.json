@@ -1,0 +1,6 @@
+{
+  "name": "Notas de Café - Cuaderno Digital",
+  "description": "Suite móvil agrícola para caficultores de especialidad. Gestión de cosecha, lotes, labores, costos y sanidad vegetal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
