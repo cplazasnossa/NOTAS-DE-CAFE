@@ -8,6 +8,7 @@ import { FormAlert } from '../common/FormAlert';
 import { ScreenFooterNav } from '../common/ScreenFooterNav';
 import { ActivityHistoryFeed } from './activities/ActivityHistoryFeed';
 import { useAsyncFormSubmit } from '../../hooks/useAsyncFormSubmit';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -31,6 +32,19 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
   const [activities, setActivities] = useState<CulturalActivity[]>(INITIAL_ACTIVITIES);
 
   const { isSaving, isSuccess, errorMessage, clearError, executeSubmit } = useAsyncFormSubmit();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
+
+  const getActivityLabel = (type: CulturalActivity['type']) => {
+    switch (type) {
+      case 'Plateo y Desyerbe': return isEn ? 'Weeding & Base Clearing' : 'Plateo y Desyerbe';
+      case 'Poda y Manejo Tejidos': return isEn ? 'Pruning & Canopy Care' : 'Poda y Manejo Tejidos';
+      case 'Fertilización': return isEn ? 'Fertilization' : 'Fertilización';
+      case 'Siembra Sombrío': return isEn ? 'Shade Tree Planting' : 'Siembra Sombrío';
+      case 'Mantenimiento Riego': return isEn ? 'Irrigation Maintenance' : 'Mantenimiento Riego';
+      default: return type;
+    }
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +52,9 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
     executeSubmit(
       () => {
         if (workers <= 0) {
-          return 'Por favor especifica al menos 1 operario asignado a la labor.';
+          return isEn
+            ? 'Please specify at least 1 worker assigned to this task.'
+            : 'Por favor especifica al menos 1 operario asignado a la labor.';
         }
         return null;
       },
@@ -49,8 +65,8 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
           lotName,
           workers,
           progressPct,
-          date: 'Hoy · 14 Oct',
-          tools: tools.trim() || 'Herramientas estándar'
+          date: isEn ? 'Today · Oct 14' : 'Hoy · 14 Oct',
+          tools: tools.trim() || (isEn ? 'Standard field tools' : 'Herramientas estándar')
         };
 
         setActivities((prev) => [newAct, ...prev]);
@@ -63,12 +79,12 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Header */}
       <ScreenHeader
-        title="Registrar Actividad"
-        subtitle="Labores agronómicas, fertilización y podas de cafetal"
-        category="Manejo Agronómico"
+        title={t.activityTitle}
+        subtitle={t.activitySubtitle}
+        category={t.activityCategory}
         showBack={true}
         onBack={() => onNavigate('SCREEN_11')}
-        backLabel="Volver a Costos"
+        backLabel={isEn ? "Back to Costs" : "Volver a Costos"}
         icon={<Sprout className="w-5 h-5 text-leaf-800" />}
       />
 
@@ -85,7 +101,7 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
         {/* Tipo de Labor */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1.5">
-            Tipo de Labor Agronómica
+            {t.activityType}
           </label>
           <div className="grid grid-cols-2 gap-1.5">
             {ACTIVITY_OPTIONS.map((opt) => (
@@ -99,7 +115,7 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
                     : 'bg-parchment text-coffee-700 border-coffee-200 hover:bg-coffee-100'
                 }`}
               >
-                {opt}
+                {getActivityLabel(opt)}
               </button>
             ))}
           </div>
@@ -109,7 +125,7 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Lote Intervenido
+              {t.activityLot}
             </label>
             <div className="relative">
               <select
@@ -127,26 +143,26 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
 
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Operarios / Jornaleros
+              {t.activityWorkers}
             </label>
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setWorkers(Math.max(1, workers - 1))}
                 className="w-11 h-11 rounded-xl bg-parchment border border-coffee-200 text-coffee-900 font-bold hover:bg-coffee-100 active:scale-95 cursor-pointer flex items-center justify-center text-base"
-                aria-label="Restar un operario"
+                aria-label={isEn ? "Subtract one worker" : "Restar un operario"}
               >
                 -1
               </button>
               <div className="flex-1 min-h-[44px] bg-parchment rounded-xl border border-coffee-200 flex items-center justify-center font-bold text-xs text-coffee-900">
                 <Users className="w-4 h-4 mr-1.5 text-coffee-600" />
-                <span>{workers} personas</span>
+                <span>{workers} {isEn ? 'workers' : 'personas'}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setWorkers(workers + 1)}
                 className="w-11 h-11 rounded-xl bg-parchment border border-coffee-200 text-coffee-900 font-bold hover:bg-coffee-100 active:scale-95 cursor-pointer flex items-center justify-center text-base"
-                aria-label="Sumar un operario"
+                aria-label={isEn ? "Add one worker" : "Sumar un operario"}
               >
                 +1
               </button>
@@ -157,8 +173,12 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
         {/* Avance Slider */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-bold text-coffee-800">Avance de la Parcela</span>
-            <span className="font-mono font-bold text-leaf-700">{progressPct}% completado</span>
+            <span className="font-bold text-coffee-800">
+              {isEn ? 'Plot Progress' : 'Avance de la Parcela'}
+            </span>
+            <span className="font-mono font-bold text-leaf-700">
+              {progressPct}% {isEn ? 'completed' : 'completado'}
+            </span>
           </div>
           <input
             type="range"
@@ -174,13 +194,13 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
         {/* Herramientas */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Herramientas e Insumos Utilizados
+            {t.activityTools}
           </label>
           <input
             type="text"
             value={tools}
             onChange={(e) => setTools(e.target.value)}
-            placeholder="Ej: Machete, guadaña, urea..."
+            placeholder={isEn ? "E.g., Machete, brush cutter, fertilizer..." : "Ej: Machete, guadaña, urea..."}
             className="w-full min-h-[44px] px-3 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700"
           />
         </div>
@@ -190,10 +210,10 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
           type="submit"
           isLoading={isSaving}
           isSuccess={isSuccess}
-          loadingText="Guardando labor agronómica..."
-          successText="¡Labor registrada en el cuaderno!"
+          loadingText={t.activitySaving}
+          successText={t.activitySuccessMsg}
         >
-          <span>Registrar Fin de Labor</span>
+          <span>{t.activitySaveBtn}</span>
           <ArrowRight className="w-4 h-4 text-amber-200" />
         </FeedbackButton>
       </form>
@@ -204,9 +224,9 @@ export const Screen7RegisterActivity: React.FC<Props> = ({ onNavigate, onAddActi
       {/* 5. Navegación Inferior */}
       <ScreenFooterNav
         onBack={() => onNavigate('SCREEN_11')}
-        backLabel="Atrás"
+        backLabel={t.prev}
         onNext={() => onNavigate('SCREEN_15')}
-        nextLabel="Siguiente"
+        nextLabel={t.next}
       />
     </div>
   );

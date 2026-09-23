@@ -8,6 +8,7 @@ import { FormAlert } from '../common/FormAlert';
 import { ScreenFooterNav } from '../common/ScreenFooterNav';
 import { ExpenseHistoryFeed } from './costs/ExpenseHistoryFeed';
 import { useAsyncFormSubmit } from '../../hooks/useAsyncFormSubmit';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -30,6 +31,19 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
   const [expenses, setExpenses] = useState<ExpenseRecord[]>(INITIAL_EXPENSES);
 
   const { isSaving, isSuccess, errorMessage, clearError, executeSubmit } = useAsyncFormSubmit();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
+
+  const getCategoryLabel = (cat: ExpenseRecord['category']) => {
+    switch (cat) {
+      case 'Jornales': return isEn ? 'Labor / Wages' : 'Jornales';
+      case 'Fertilizantes': return isEn ? 'Fertilizers' : 'Fertilizantes';
+      case 'Transporte': return isEn ? 'Transport' : 'Transporte';
+      case 'Beneficio': return isEn ? 'Processing' : 'Beneficio';
+      case 'Combustible': return isEn ? 'Fuel' : 'Combustible';
+      default: return cat;
+    }
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +52,9 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
     executeSubmit(
       () => {
         if (!amount || isNaN(parsedAmount) || parsedAmount <= 0) {
-          return 'Por favor escribe un monto válido mayor a $0 en pesos colombianos (ej: 85.000).';
+          return isEn
+            ? 'Please enter a valid amount greater than $0 in COP (e.g., 85,000).'
+            : 'Por favor escribe un monto válido mayor a $0 en pesos colombianos (ej: 85.000).';
         }
         return null;
       },
@@ -46,9 +62,9 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
         const newExpense: ExpenseRecord = {
           id: 'exp-' + Date.now(),
           category,
-          description: description.trim() || `Gasto en ${category}`,
+          description: description.trim() || `${isEn ? 'Expense in' : 'Gasto en'} ${getCategoryLabel(category)}`,
           amountCop: parsedAmount,
-          date: 'Hoy · 14 Oct',
+          date: isEn ? 'Today · Oct 14' : 'Hoy · 14 Oct',
           lotName,
           status: 'Pagado'
         };
@@ -63,12 +79,12 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Encabezado */}
       <ScreenHeader
-        title="Registrar Costo"
-        subtitle="Control contable de jornales, fletes e insumos"
-        category="Finanzas de la Finca"
+        title={t.costTitle}
+        subtitle={t.costSubtitle}
+        category={t.costCategory}
         showBack={true}
         onBack={() => onNavigate('SCREEN_13')}
-        backLabel="Volver a Registro"
+        backLabel={t.backToRecord}
         icon={<DollarSign className="w-5 h-5 text-amber-900" />}
       />
 
@@ -85,7 +101,7 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
         {/* Categoría */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Rubro o Categoría
+            {isEn ? 'Expense Category' : 'Rubro o Categoría'}
           </label>
           <div className="grid grid-cols-3 gap-1.5">
             {CATEGORIES.map((cat) => (
@@ -99,7 +115,7 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
                     : 'bg-parchment text-coffee-700 border-coffee-200 hover:bg-coffee-100'
                 }`}
               >
-                {cat}
+                {getCategoryLabel(cat)}
               </button>
             ))}
           </div>
@@ -108,7 +124,7 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
         {/* Monto en COP */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Monto del Desembolso ($ COP)
+            {t.costAmount}
           </label>
           <div className="relative">
             <span className="absolute left-3.5 top-3 text-coffee-500 font-bold">$</span>
@@ -126,13 +142,13 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
         {/* Descripción */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Concepto del Gasto
+            {t.costDescription}
           </label>
           <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Ej: Pago de 4 jornales de desyerba..."
+            placeholder={isEn ? "E.g., Payment for 4 selective picking wages..." : "Ej: Pago de 4 jornales de desyerba..."}
             className="w-full min-h-[46px] px-3.5 py-2.5 bg-parchment rounded-xl border border-coffee-200 text-coffee-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-coffee-700"
           />
         </div>
@@ -140,7 +156,7 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
         {/* Lote Afectado */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Lote o Centro de Costo
+            {t.costLotOptional}
           </label>
           <div className="relative">
             <select
@@ -153,7 +169,9 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
                   {lot.name}
                 </option>
               ))}
-              <option value="Administración General">Administración General (Toda la Finca)</option>
+              <option value="Administración General">
+                {isEn ? 'General Administration (Whole Farm)' : 'Administración General (Toda la Finca)'}
+              </option>
             </select>
             <ChevronDown className="w-4 h-4 text-coffee-500 absolute right-3 top-3.5 pointer-events-none" />
           </div>
@@ -164,10 +182,10 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
           type="submit"
           isLoading={isSaving}
           isSuccess={isSuccess}
-          loadingText="Asentando gasto en contabilidad..."
-          successText="¡Gasto asentado correctamente!"
+          loadingText={t.costSaving}
+          successText={t.costSuccessMsg}
         >
-          <span>Asentar Gasto en el Libro</span>
+          <span>{t.costSaveBtn}</span>
         </FeedbackButton>
       </form>
 
@@ -177,9 +195,9 @@ export const Screen6RegisterCost: React.FC<Props> = ({ onNavigate, onAddExpense 
       {/* 5. Navegación Inferior */}
       <ScreenFooterNav
         onBack={() => onNavigate('SCREEN_13')}
-        backLabel="Atrás"
+        backLabel={t.prev}
         onNext={() => onNavigate('SCREEN_17')}
-        nextLabel="Siguiente"
+        nextLabel={t.next}
       />
     </div>
   );

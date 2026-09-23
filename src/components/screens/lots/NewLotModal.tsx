@@ -4,6 +4,7 @@ import { X, Trees, PlusCircle } from 'lucide-react';
 import { FeedbackButton } from '../../common/FeedbackButton';
 import { FormAlert } from '../../common/FormAlert';
 import { useAsyncFormSubmit } from '../../../hooks/useAsyncFormSubmit';
+import { useLanguage } from '../../../context/LanguageContext';
 
 interface Props {
   isOpen: boolean;
@@ -33,6 +34,8 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
   const [notes, setNotes] = useState('');
 
   const { isSaving, isSuccess, errorMessage, clearError, executeSubmit } = useAsyncFormSubmit();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   if (!isOpen) return null;
 
@@ -42,11 +45,15 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     executeSubmit(
       () => {
         if (!name.trim()) {
-          return 'Por favor ingresa un nombre para el lote (ej: Lote El Porvenir).';
+          return isEn
+            ? 'Please enter a name for the lot (e.g., El Porvenir Lot).'
+            : 'Por favor ingresa un nombre para el lote (ej: Lote El Porvenir).';
         }
         const parsedArea = parseFloat(areaHa);
         if (!areaHa || isNaN(parsedArea) || parsedArea <= 0) {
-          return 'Por favor especifica un área en hectáreas válida (ej: 2.5).';
+          return isEn
+            ? 'Please specify a valid area in hectares (e.g., 2.5).'
+            : 'Por favor especifica un área en hectáreas válida (ej: 2.5).';
         }
         return null;
       },
@@ -67,9 +74,11 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           floweringPct: 75,
           brixAverage: parsedBrix,
           status,
-          lastActivity: 'Registro inicial de lote',
+          lastActivity: isEn ? 'Initial lot record' : 'Registro inicial de lote',
           healthRating: 95,
-          notes: notes.trim() || `Lote sembrado con variedad ${variety} a ${parsedAltitude} msnm con ${parsedTrees.toLocaleString()} árboles.`
+          notes: notes.trim() || (isEn
+            ? `Planted with ${variety} at ${parsedAltitude} masl with ${parsedTrees.toLocaleString()} trees.`
+            : `Lote sembrado con variedad ${variety} a ${parsedAltitude} msnm con ${parsedTrees.toLocaleString()} árboles.`)
         };
 
         onSave(newLot);
@@ -90,6 +99,14 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     );
   };
 
+  const getStatusName = (st: CoffeeLot['status']) => {
+    if (st === 'En Cosecha') return t.lotsFilterHarvest;
+    if (st === 'Óptimo') return t.lotsFilterOptimal;
+    if (st === 'Floración') return t.lotsFilterFlower;
+    if (st === 'Mantenimiento') return t.lotsFilterMaintenance;
+    return st;
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 animate-fade-in">
       <div
@@ -102,8 +119,8 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
               <Trees className="w-4 h-4 text-amber-300" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-coffee-900">Registrar Nuevo Lote</h3>
-              <p className="text-[10px] text-coffee-500">Catastro agronómico y delimitación</p>
+              <h3 className="text-sm font-bold text-coffee-900">{t.newLotModalTitle}</h3>
+              <p className="text-[10px] text-coffee-500">{t.newLotModalSubtitle}</p>
             </div>
           </div>
           <button
@@ -130,13 +147,13 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           {/* Nombre del Lote */}
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Nombre del Lote *
+              {t.newLotNameLabel}
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Ej: Lote El Porvenir, La Loma #3..."
+              placeholder={t.newLotNamePlaceholder}
               className="w-full min-h-[44px] px-3.5 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700"
             />
           </div>
@@ -144,7 +161,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           {/* Variedad de Café */}
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Variedad de Café
+              {t.newLotVarietyLabel}
             </label>
             <select
               value={variety}
@@ -161,7 +178,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           <div className="grid grid-cols-2 gap-2.5">
             <div>
               <label className="text-xs font-bold text-coffee-800 block mb-1">
-                Área (Hectáreas) *
+                {t.newLotAreaLabel}
               </label>
               <input
                 type="number"
@@ -170,14 +187,14 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
                 inputMode="decimal"
                 value={areaHa}
                 onChange={(e) => setAreaHa(e.target.value)}
-                placeholder="Ej: 2.5"
+                placeholder="2.5"
                 className="w-full min-h-[44px] px-3.5 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 font-mono focus:outline-none focus:ring-2 focus:ring-coffee-700"
               />
             </div>
 
             <div>
               <label className="text-xs font-bold text-coffee-800 block mb-1">
-                Árboles Estimados
+                {t.newLotTreesLabel}
               </label>
               <input
                 type="number"
@@ -185,7 +202,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
                 inputMode="numeric"
                 value={treesCount}
                 onChange={(e) => setTreesCount(e.target.value)}
-                placeholder="Ej: 12500"
+                placeholder="12500"
                 className="w-full min-h-[44px] px-3.5 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 font-mono focus:outline-none focus:ring-2 focus:ring-coffee-700"
               />
             </div>
@@ -195,7 +212,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           <div className="grid grid-cols-2 gap-2.5">
             <div>
               <label className="text-xs font-bold text-coffee-800 block mb-1">
-                Altitud (msnm)
+                {t.newLotAltitudeLabel}
               </label>
               <input
                 type="number"
@@ -204,14 +221,14 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
                 inputMode="numeric"
                 value={altitudeMsnm}
                 onChange={(e) => setAltitudeMsnm(e.target.value)}
-                placeholder="Ej: 1780"
+                placeholder="1780"
                 className="w-full min-h-[44px] px-3.5 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 font-mono focus:outline-none focus:ring-2 focus:ring-coffee-700"
               />
             </div>
 
             <div>
               <label className="text-xs font-bold text-coffee-800 block mb-1">
-                Maduración (°Brix)
+                {t.newLotBrixLabel}
               </label>
               <input
                 type="number"
@@ -221,7 +238,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
                 inputMode="decimal"
                 value={brixAverage}
                 onChange={(e) => setBrixAverage(e.target.value)}
-                placeholder="Ej: 23"
+                placeholder="23"
                 className="w-full min-h-[44px] px-3.5 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 font-mono focus:outline-none focus:ring-2 focus:ring-coffee-700"
               />
             </div>
@@ -230,7 +247,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           {/* Estado Agronómico */}
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Estado Inicial del Lote
+              {t.newLotStatusLabel}
             </label>
             <div className="grid grid-cols-2 gap-1.5">
               {(['En Cosecha', 'Floración', 'Óptimo', 'Mantenimiento'] as CoffeeLot['status'][]).map((st) => (
@@ -244,7 +261,7 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
                       : 'bg-parchment text-coffee-700 border-coffee-200 hover:bg-coffee-100'
                   }`}
                 >
-                  {st}
+                  {getStatusName(st)}
                 </button>
               ))}
             </div>
@@ -253,12 +270,12 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
           {/* Notas agronómicas */}
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Notas de Manejo (Opcional)
+              {t.newLotNotesLabel}
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Ej: Suelo franco arenoso, sombrío con guamos, pendiente del 25%..."
+              placeholder={t.newLotNotesPlaceholder}
               rows={2}
               className="w-full px-3.5 py-2 text-xs bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700"
             />
@@ -270,11 +287,11 @@ export const NewLotModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
               type="submit"
               isLoading={isSaving}
               isSuccess={isSuccess}
-              loadingText="Registrando lote en catastro..."
-              successText="¡Lote registrado exitosamente!"
+              loadingText={t.newLotSaving}
+              successText={t.newLotSaved}
             >
               <PlusCircle className="w-4 h-4 text-amber-200" />
-              <span>Guardar Nuevo Lote</span>
+              <span>{t.newLotSaveBtn}</span>
             </FeedbackButton>
           </div>
         </form>

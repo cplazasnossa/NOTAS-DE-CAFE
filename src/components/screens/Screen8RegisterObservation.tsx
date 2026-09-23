@@ -8,6 +8,7 @@ import { FormAlert } from '../common/FormAlert';
 import { ScreenFooterNav } from '../common/ScreenFooterNav';
 import { PhytosanitaryHistoryFeed } from './phytosanitary/PhytosanitaryHistoryFeed';
 import { useAsyncFormSubmit } from '../../hooks/useAsyncFormSubmit';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -24,14 +25,27 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
   const [alerts, setAlerts] = useState<PhytosanitaryAlert[]>(INITIAL_ALERTS);
 
   const { isSaving, isSuccess, errorMessage, clearError, executeSubmit } = useAsyncFormSubmit();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
+
+  const translateSeverity = (sev: PhytosanitaryAlert['severity']) => {
+    switch (sev) {
+      case 'Baja': return t.healthSeverityLow;
+      case 'Media': return t.healthSeverityMed;
+      case 'Crítica': return t.healthSeverityHigh;
+      default: return sev;
+    }
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
 
     executeSubmit(
       () => {
-        if (incidencePct < 0 || incidencePct > 100) {
-          return 'Por favor especifica un porcentaje de incidencia entre 0% y 100%.';
+        if (!actionRequired.trim()) {
+          return isEn
+            ? 'Please specify a corrective action or agronomic note.'
+            : 'Por favor especifica una medida correctiva o nota agronómica.';
         }
         return null;
       },
@@ -43,8 +57,8 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
           incidencePct,
           branchesSampled: 30,
           severity,
-          date: 'Hoy · 14 Oct',
-          actionRequired: actionRequired.trim() || 'Monitoreo de rutina en el lote.'
+          actionRequired: actionRequired.trim(),
+          date: isEn ? 'Today · Oct 14' : 'Hoy · 14 Oct'
         };
 
         setAlerts((prev) => [newAlert, ...prev]);
@@ -55,14 +69,14 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
 
   return (
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
-      {/* 1. Encabezado */}
+      {/* 1. Header */}
       <ScreenHeader
-        title="Sanidad & Plagas"
-        subtitle="Monitoreo agronómico de broca, roya y microclima"
-        category="Sanidad Vegetal"
+        title={t.healthTitle}
+        subtitle={t.healthSubtitle}
+        category={t.healthCategory}
         showBack={true}
         onBack={() => onNavigate('SCREEN_17')}
-        backLabel="Volver a Actividad"
+        backLabel={isEn ? "Back to Activity" : "Volver a Actividad"}
         icon={<ShieldCheck className="w-5 h-5 text-rose-800" />}
       />
 
@@ -79,7 +93,7 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
         {/* Plaga */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Plaga / Agente Detectado
+            {t.healthPestType}
           </label>
           <div className="relative">
             <select
@@ -87,11 +101,18 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
               onChange={(e) => setPestName(e.target.value as PhytosanitaryAlert['pestName'])}
               className="w-full min-h-[46px] px-3 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700 appearance-none cursor-pointer"
             >
-              <option value="Broca del Café">Broca del Café (Hypothenemus hampei)</option>
-              <option value="Roya del Cafeto">Roya del Cafeto (Hemileia vastatrix)</option>
-              <option value="Mancha de Hierro">Mancha de Hierro (Cercospora coffeicola)</option>
-              <option value="Ojo de Gallo">Ojo de Gallo (Mycena citricolor)</option>
-              <option value="Cochinilla de la Raíz">Cochinilla de la Raíz (Puto barberi)</option>
+              <option value="Broca del Café">
+                {isEn ? 'Coffee Berry Borer (Hypothenemus hampei)' : 'Broca del Café (Hypothenemus hampei)'}
+              </option>
+              <option value="Roya (Hemileia vastatrix)">
+                {isEn ? 'Coffee Leaf Rust (Hemileia vastatrix)' : 'Roya (Hemileia vastatrix)'}
+              </option>
+              <option value="Mancha de Hierro">
+                {isEn ? 'Brown Eye Spot (Cercospora coffeicola)' : 'Mancha de Hierro (Cercospora coffeicola)'}
+              </option>
+              <option value="Ojo de Gallo">
+                {isEn ? 'American Leaf Spot (Mycena citricolor)' : 'Ojo de Gallo (Mycena citricolor)'}
+              </option>
             </select>
             <ChevronDown className="w-4 h-4 text-coffee-500 absolute right-3 top-3.5 pointer-events-none" />
           </div>
@@ -101,7 +122,7 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Lote Inspeccionado
+              {isEn ? 'Inspected Lot' : 'Lote Inspeccionado'}
             </label>
             <div className="relative">
               <select
@@ -119,7 +140,7 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
 
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Nivel de Severidad
+              {t.healthSeverity}
             </label>
             <div className="grid grid-cols-3 gap-1">
               {(['Baja', 'Media', 'Crítica'] as PhytosanitaryAlert['severity'][]).map((sev) => (
@@ -137,7 +158,7 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
                       : 'bg-parchment text-coffee-700 border-coffee-200 hover:bg-coffee-100'
                   }`}
                 >
-                  {sev}
+                  {translateSeverity(sev)}
                 </button>
               ))}
             </div>
@@ -147,7 +168,7 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
         {/* Incidencia en Muestreo */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-bold text-coffee-800">Incidencia en Muestreo (30 ramas)</span>
+            <span className="font-bold text-coffee-800">{t.healthIncidence} ({t.healthBranches})</span>
             <span className="font-mono font-bold text-rose-700">{incidencePct}%</span>
           </div>
           <input
@@ -160,21 +181,21 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
             className="w-full accent-rose-700 cursor-pointer h-2 bg-coffee-200 rounded-lg"
           />
           <div className="flex justify-between text-[10px] text-coffee-500">
-            <span>0% Umbral económico seguro</span>
-            <span>&gt;2% Requiere control biológico</span>
+            <span>{isEn ? '0% Safe economic threshold' : '0% Umbral económico seguro'}</span>
+            <span>{isEn ? '>2% Requires biocontrol' : '>2% Requiere control biológico'}</span>
           </div>
         </div>
 
         {/* Medida correctiva */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Medida Correctiva Recomendada
+            {t.healthActionReq}
           </label>
           <input
             type="text"
             value={actionRequired}
             onChange={(e) => setActionRequired(e.target.value)}
-            placeholder="Ej: Instalar trampas con alcohol o aplicar hongo Beauveria..."
+            placeholder={isEn ? "E.g., Install alcohol traps or apply Beauveria fungus..." : "Ej: Instalar trampas con alcohol o aplicar hongo Beauveria..."}
             className="w-full min-h-[44px] px-3 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700"
           />
         </div>
@@ -187,9 +208,13 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
             </div>
             <div>
               <span className="text-xs font-bold text-coffee-900 block">
-                {photoAttached ? 'Evidencia fotográfica cargada' : 'Foto de la hoja o broca'}
+                {photoAttached
+                  ? (isEn ? 'Photo evidence attached' : 'Evidencia fotográfica cargada')
+                  : (isEn ? 'Leaf or borer photo' : 'Foto de la hoja o broca')}
               </span>
-              <span className="text-[10px] text-coffee-500">Geolocalización GPS automática</span>
+              <span className="text-[10px] text-coffee-500">
+                {isEn ? 'Automatic GPS geolocation' : 'Geolocalización GPS automática'}
+              </span>
             </div>
           </div>
           <button
@@ -199,7 +224,7 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
               photoAttached ? 'bg-leaf-700 text-white' : 'bg-coffee-800 text-white'
             }`}
           >
-            {photoAttached ? '✓ Adjunta' : 'Tomar Foto'}
+            {photoAttached ? (isEn ? '✓ Attached' : '✓ Adjunta') : (isEn ? 'Take Photo' : 'Tomar Foto')}
           </button>
         </div>
 
@@ -208,10 +233,10 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
           type="submit"
           isLoading={isSaving}
           isSuccess={isSuccess}
-          loadingText="Guardando alerta fitosanitaria..."
-          successText="¡Inspección guardada en cuaderno!"
+          loadingText={t.healthSaving}
+          successText={t.healthSuccessMsg}
         >
-          <span>Guardar Inspección Fitosanitaria</span>
+          <span>{t.healthSaveBtn}</span>
           <ArrowRight className="w-4 h-4 text-amber-200" />
         </FeedbackButton>
       </form>
@@ -222,9 +247,9 @@ export const Screen8RegisterObservation: React.FC<Props> = ({ onNavigate, onAddA
       {/* 5. Navegación Inferior */}
       <ScreenFooterNav
         onBack={() => onNavigate('SCREEN_17')}
-        backLabel="Atrás"
+        backLabel={t.prev}
         onNext={() => onNavigate('SCREEN_9')}
-        nextLabel="Siguiente"
+        nextLabel={t.next}
       />
     </div>
   );

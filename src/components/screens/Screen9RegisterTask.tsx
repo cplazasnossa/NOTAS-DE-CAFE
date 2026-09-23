@@ -8,6 +8,7 @@ import { FormAlert } from '../common/FormAlert';
 import { ScreenFooterNav } from '../common/ScreenFooterNav';
 import { TaskListFeed } from './tasks/TaskListFeed';
 import { useAsyncFormSubmit } from '../../hooks/useAsyncFormSubmit';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -25,11 +26,22 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
   const [dueDate, setDueDate] = useState('Hoy · 4:00 PM');
 
   const { isSaving, isSuccess, errorMessage, clearError, executeSubmit } = useAsyncFormSubmit();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   const toggleTask = (id: string) => {
     setTasks((prev) =>
       prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
     );
+  };
+
+  const translatePriority = (p: FarmTask['priority']) => {
+    switch (p) {
+      case 'Alta': return t.agendaPriorityHigh;
+      case 'Media': return t.agendaPriorityMedium;
+      case 'Baja': return t.agendaPriorityLow;
+      default: return p;
+    }
   };
 
   const handleCreateTask = (e: React.FormEvent) => {
@@ -38,7 +50,9 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
     executeSubmit(
       () => {
         if (!title.trim()) {
-          return 'Por favor escribe la descripción de la tarea (ej: Revisión de mangueras de despulpadora).';
+          return isEn
+            ? 'Please enter a task description (e.g., Check pulper hoses).'
+            : 'Por favor escribe la descripción de la tarea (ej: Revisión de mangueras de despulpadora).';
         }
         return null;
       },
@@ -49,7 +63,7 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
           priority,
           category,
           assignee,
-          dueDate,
+          dueDate: dueDate.trim() || (isEn ? 'Today · 5:00 PM' : 'Hoy · 5:00 PM'),
           completed: false
         };
 
@@ -64,12 +78,12 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Encabezado */}
       <ScreenHeader
-        title="Agenda"
-        subtitle="Tareas programadas, cuadrillas y pendientes de la finca"
-        category="Plan de Trabajo"
+        title={t.agendaTitle}
+        subtitle={t.agendaSubtitle}
+        category={t.agendaCategory}
         showBack={true}
         onBack={() => onNavigate('SCREEN_15')}
-        backLabel="Volver a Sanidad"
+        backLabel={isEn ? "Back to Health" : "Volver a Sanidad"}
         icon={<CalendarCheck className="w-5 h-5 text-coffee-800" />}
       />
 
@@ -85,13 +99,13 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
       <form onSubmit={handleCreateTask} className="bg-white rounded-3xl p-5 border border-coffee-200 shadow-sm space-y-4">
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Descripción de la Tarea
+            {t.agendaTaskTitle}
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Ej: Calibrar zaranda de despulpadora..."
+            placeholder={t.agendaTaskTitlePlaceholder}
             className="w-full min-h-[46px] px-3.5 py-2.5 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700"
           />
         </div>
@@ -100,7 +114,7 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Prioridad
+              {t.agendaPriorityLabel}
             </label>
             <div className="grid grid-cols-3 gap-1">
               {PRIORITIES.map((p) => (
@@ -118,7 +132,7 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
                       : 'bg-parchment text-coffee-700 border-coffee-200 hover:bg-coffee-100'
                   }`}
                 >
-                  {p}
+                  {translatePriority(p)}
                 </button>
               ))}
             </div>
@@ -126,7 +140,7 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
 
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Responsable
+              {t.agendaAssigneeLabel}
             </label>
             <div className="relative">
               <select
@@ -134,10 +148,10 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
                 onChange={(e) => setAssignee(e.target.value)}
                 className="w-full min-h-[44px] px-3 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700 appearance-none cursor-pointer"
               >
-                <option value="Don Carlos">Don Carlos (Mayordomo)</option>
-                <option value="Jairo Ospina">Jairo Ospina (Cuadrilla 1)</option>
-                <option value="Wilson Cañas">Wilson Cañas (Beneficiadero)</option>
-                <option value="María Gómez">María Gómez (Secado)</option>
+                <option value="Don Carlos">Don Carlos ({isEn ? 'Farm Manager' : 'Mayordomo'})</option>
+                <option value="Jairo Ospina">Jairo Ospina ({isEn ? 'Crew 1' : 'Cuadrilla 1'})</option>
+                <option value="Wilson Cañas">Wilson Cañas ({isEn ? 'Wet Mill' : 'Beneficiadero'})</option>
+                <option value="María Gómez">María Gómez ({isEn ? 'Drying' : 'Secado'})</option>
               </select>
               <ChevronDown className="w-4 h-4 text-coffee-500 absolute right-3 top-3 pointer-events-none" />
             </div>
@@ -148,20 +162,20 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Plazo de Ejecución
+              {t.agendaDueLabel}
             </label>
             <input
               type="text"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              placeholder="Ej: Hoy · 5:00 PM"
+              placeholder={isEn ? "E.g., Today · 5:00 PM" : "Ej: Hoy · 5:00 PM"}
               className="w-full min-h-[44px] px-3 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700"
             />
           </div>
 
           <div>
             <label className="text-xs font-bold text-coffee-800 block mb-1">
-              Área de Trabajo
+              {t.agendaCategoryLabel}
             </label>
             <div className="relative">
               <select
@@ -169,10 +183,10 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
                 onChange={(e) => setCategory(e.target.value as FarmTask['category'])}
                 className="w-full min-h-[44px] px-3 py-2 text-xs sm:text-sm bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700 appearance-none cursor-pointer"
               >
-                <option value="Taller">Taller y Maquinaria</option>
-                <option value="Beneficio">Beneficiadero</option>
-                <option value="Campo">Campo y Cafetal</option>
-                <option value="Secado">Patio y Secado</option>
+                <option value="Taller">{isEn ? 'Workshop & Machinery' : 'Taller y Maquinaria'}</option>
+                <option value="Beneficio">{isEn ? 'Wet Mill Processing' : 'Beneficiadero'}</option>
+                <option value="Campo">{isEn ? 'Field & Coffee Plot' : 'Campo y Cafetal'}</option>
+                <option value="Secado">{isEn ? 'Patio & Solar Drying' : 'Patio y Secado'}</option>
               </select>
               <ChevronDown className="w-4 h-4 text-coffee-500 absolute right-3 top-3 pointer-events-none" />
             </div>
@@ -184,10 +198,10 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
           type="submit"
           isLoading={isSaving}
           isSuccess={isSuccess}
-          loadingText="Guardando pendiente en agenda..."
-          successText="¡Pendiente añadido a la agenda!"
+          loadingText={t.agendaCreating}
+          successText={t.agendaCreated}
         >
-          <span>Agendar Nuevo Pendiente</span>
+          <span>{t.agendaCreateBtn}</span>
         </FeedbackButton>
       </form>
 
@@ -197,9 +211,9 @@ export const Screen9RegisterTask: React.FC<Props> = ({ onNavigate, onAddTask }) 
       {/* 5. Navegación Inferior */}
       <ScreenFooterNav
         onBack={() => onNavigate('SCREEN_15')}
-        backLabel="Atrás"
+        backLabel={t.prev}
         onNext={() => onNavigate('SCREEN_21')}
-        nextLabel="Volver a Mi Finca"
+        nextLabel={t.backToFarm}
         nextIcon={<Home className="w-4 h-4 text-amber-200" />}
       />
     </div>

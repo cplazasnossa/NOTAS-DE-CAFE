@@ -17,9 +17,40 @@ export const ScreenDrawerModal: React.FC<Props> = ({
   onSelectScreen,
   onClose
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   if (!isOpen) return null;
+
+  const getScreenDisplayName = (id: ScreenId, fallback: string) => {
+    switch (id) {
+      case 'SCREEN_2': return t.welcomeTitle;
+      case 'SCREEN_21': return t.dashTitle;
+      case 'SCREEN_19': return t.lotsCatalogTitle;
+      case 'SCREEN_23': return t.lotProfileTitle;
+      case 'SCREEN_13': return t.harvestScaleTitle;
+      case 'SCREEN_11': return t.costTitle;
+      case 'SCREEN_17': return t.activityTitle;
+      case 'SCREEN_15': return t.healthTitle;
+      case 'SCREEN_9': return t.agendaTitle;
+      default: return fallback;
+    }
+  };
+
+  const getScreenSubtitle = (id: ScreenId, fallback: string) => {
+    switch (id) {
+      case 'SCREEN_2': return isEn ? 'Digital farm notebook' : 'Cuaderno digital de finca';
+      case 'SCREEN_21': return t.dashSubtitle;
+      case 'SCREEN_19': return t.lotsCatalogSubtitle;
+      case 'SCREEN_23': return isEn ? 'Agronomic profile' : 'Ficha agronómica';
+      case 'SCREEN_13': return t.harvestScaleSubtitle;
+      case 'SCREEN_11': return t.costSubtitle;
+      case 'SCREEN_17': return t.activitySubtitle;
+      case 'SCREEN_15': return t.healthSubtitle;
+      case 'SCREEN_9': return t.agendaSubtitle;
+      default: return fallback;
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
@@ -28,7 +59,7 @@ export const ScreenDrawerModal: React.FC<Props> = ({
           <div>
             <h3 className="text-sm font-bold text-coffee-900">{t.allScreens}</h3>
             <p className="text-[11px] text-coffee-500">
-              {t.allScreens.includes('9') ? '9 Pantallas' : '9 Screens'}
+              {isEn ? '9 Screens ecosystem' : '9 Pantallas del ecosistema'}
             </p>
           </div>
           <button
@@ -58,9 +89,11 @@ export const ScreenDrawerModal: React.FC<Props> = ({
                   {s.number}
                 </span>
                 <div>
-                  <span className="text-xs font-bold block">{s.name}</span>
+                  <span className="text-xs font-bold block">
+                    {getScreenDisplayName(s.id, s.name)}
+                  </span>
                   <span className={`text-[10px] ${currentScreenId === s.id ? 'text-amber-200' : 'text-coffee-500'}`}>
-                    {s.subtitle || s.caption}
+                    {getScreenSubtitle(s.id, s.subtitle || s.caption)}
                   </span>
                 </div>
               </div>

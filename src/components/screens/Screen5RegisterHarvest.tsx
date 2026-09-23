@@ -10,6 +10,7 @@ import { HarvestHistoryFeed } from './harvest/HarvestHistoryFeed';
 import { QuickFieldActions } from './harvest/QuickFieldActions';
 import { useAsyncFormSubmit } from '../../hooks/useAsyncFormSubmit';
 import { kgToArrobas } from '../../utils/formatters';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -26,6 +27,8 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
   const [records, setRecords] = useState<HarvestRecord[]>(INITIAL_HARVEST);
 
   const { isSaving, isSuccess, errorMessage, clearError, executeSubmit } = useAsyncFormSubmit();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   const selectedLot = INITIAL_LOTS.find((l) => l.id === lotId) || INITIAL_LOTS[0];
   const weightArrobas = kgToArrobas(weightKg);
@@ -36,7 +39,9 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
     executeSubmit(
       () => {
         if (!weightKg || weightKg <= 0) {
-          return 'Por favor ingresa un peso válido mayor a 0 kg en la báscula.';
+          return isEn
+            ? 'Please enter a valid scale weight greater than 0 kg.'
+            : 'Por favor ingresa un peso válido mayor a 0 kg en la báscula.';
         }
         return null;
       },
@@ -51,7 +56,7 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
           ripePct,
           semiRipePct,
           greenPct,
-          time: 'Hace un instante'
+          time: isEn ? 'Just now' : 'Hace un instante'
         };
 
         setRecords((prev) => [newRecord, ...prev]);
@@ -64,12 +69,12 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Encabezado */}
       <ScreenHeader
-        title="Registro"
-        subtitle="Control diario de pesaje en báscula de campo"
-        category="Cosecha y Báscula"
+        title={t.harvestScaleTitle}
+        subtitle={t.harvestScaleSubtitle}
+        category={t.harvestScaleCategory}
         showBack={true}
         onBack={() => onNavigate('SCREEN_21')}
-        backLabel="Volver a Mi Finca"
+        backLabel={t.backToFarm}
         icon={<Scale className="w-5 h-5 text-coffee-800" />}
       />
 
@@ -86,7 +91,7 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
         {/* Recolector */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Recolector / Jornalero
+            {t.harvestScalePicker}
           </label>
           <div className="relative">
             <select
@@ -94,11 +99,11 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
               onChange={(e) => setCollector(e.target.value)}
               className="w-full min-h-[46px] text-xs sm:text-sm font-semibold py-2.5 px-3 bg-parchment rounded-xl border border-coffee-200 text-coffee-900 focus:outline-none focus:ring-2 focus:ring-coffee-700 appearance-none cursor-pointer"
             >
-              <option value="Jairo Ospina">Jairo Ospina (Cuadrilla 1)</option>
-              <option value="María Esperanza Gómez">María Esperanza Gómez (Cuadrilla 1)</option>
-              <option value="Wilson Cañas">Wilson Cañas (Cuadrilla 2)</option>
-              <option value="Pedro Ramírez">Pedro Ramírez (Cuadrilla 1)</option>
-              <option value="Gonzalo Morales">Gonzalo Morales (Cuadrilla 2)</option>
+              <option value="Jairo Ospina">Jairo Ospina ({isEn ? 'Crew 1' : 'Cuadrilla 1'})</option>
+              <option value="María Esperanza Gómez">María Esperanza Gómez ({isEn ? 'Crew 1' : 'Cuadrilla 1'})</option>
+              <option value="Wilson Cañas">Wilson Cañas ({isEn ? 'Crew 2' : 'Cuadrilla 2'})</option>
+              <option value="Pedro Ramírez">Pedro Ramírez ({isEn ? 'Crew 1' : 'Cuadrilla 1'})</option>
+              <option value="Gonzalo Morales">Gonzalo Morales ({isEn ? 'Crew 2' : 'Cuadrilla 2'})</option>
             </select>
             <ChevronDown className="w-4 h-4 text-coffee-500 absolute right-3 top-3.5 pointer-events-none" />
           </div>
@@ -107,7 +112,7 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
         {/* Lote */}
         <div>
           <label className="text-xs font-bold text-coffee-800 block mb-1">
-            Lote de Procedencia
+            {t.harvestScaleLot}
           </label>
           <div className="relative">
             <select
@@ -117,7 +122,7 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
             >
               {INITIAL_LOTS.map((lot) => (
                 <option key={lot.id} value={lot.id}>
-                  {lot.name} ({lot.variety} · {lot.altitudeMsnm} msnm)
+                  {lot.name} ({lot.variety} · {lot.altitudeMsnm} {isEn ? 'masl' : 'msnm'})
                 </option>
               ))}
             </select>
@@ -128,14 +133,14 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
         {/* Báscula Display & Ajustadores */}
         <div className="bg-parchment rounded-2xl p-4 border border-coffee-200 text-center space-y-3">
           <span className="text-[10px] font-bold uppercase tracking-wider text-coffee-600 block">
-            Peso Báscula de Campo
+            {t.harvestScaleGrossKg}
           </span>
           <div className="flex items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => setWeightKg(Math.max(5, weightKg - 5))}
               className="w-12 h-12 rounded-xl bg-white border border-coffee-300 text-coffee-900 font-bold text-lg hover:bg-coffee-100 active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
-              aria-label="Restar 5 kilos"
+              aria-label={isEn ? "Subtract 5 kilograms" : "Restar 5 kilos"}
             >
               -5
             </button>
@@ -149,15 +154,15 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
               type="button"
               onClick={() => setWeightKg(weightKg + 5)}
               className="w-12 h-12 rounded-xl bg-white border border-coffee-300 text-coffee-900 font-bold text-lg hover:bg-coffee-100 active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
-              aria-label="Sumar 5 kilos"
+              aria-label={isEn ? "Add 5 kilograms" : "Sumar 5 kilos"}
             >
               +5
             </button>
           </div>
 
           <div className="flex items-center justify-center gap-2 text-xs font-semibold text-coffee-700">
-            <span>Equivalente:</span>
-            <strong className="text-coffee-950 font-mono text-sm">{weightArrobas} Arrobas</strong>
+            <span>{isEn ? 'Equivalent:' : 'Equivalente:'}</span>
+            <strong className="text-coffee-950 font-mono text-sm">{weightArrobas} Arrobas (@)</strong>
             <span className="text-[10px] text-coffee-500 font-normal">(1 @ = 12.5 kg)</span>
           </div>
         </div>
@@ -165,21 +170,21 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
         {/* Calidad del grano */}
         <div className="space-y-2 pt-1">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-bold text-coffee-800">Calidad del Grano Cosechado</span>
-            <span className="text-[11px] text-leaf-700 font-bold">{ripePct}% Maduras</span>
+            <span className="font-bold text-coffee-800">{t.harvestScaleRipeQuality}</span>
+            <span className="text-[11px] text-leaf-700 font-bold">{ripePct}% {t.harvestRipeLabel}</span>
           </div>
 
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
             <div className="p-2.5 bg-rose-50 rounded-xl border border-rose-200">
-              <span className="text-[10px] text-rose-800 font-bold block">Maduras</span>
+              <span className="text-[10px] text-rose-800 font-bold block">{t.harvestRipeLabel}</span>
               <span className="text-base font-bold text-rose-900">{ripePct}%</span>
             </div>
             <div className="p-2.5 bg-amber-50 rounded-xl border border-amber-200">
-              <span className="text-[10px] text-amber-800 font-bold block">Pintonas</span>
+              <span className="text-[10px] text-amber-800 font-bold block">{t.harvestSemiRipeLabel}</span>
               <span className="text-base font-bold text-amber-900">{semiRipePct}%</span>
             </div>
             <div className="p-2.5 bg-leaf-50 rounded-xl border border-leaf-200">
-              <span className="text-[10px] text-leaf-800 font-bold block">Verdes</span>
+              <span className="text-[10px] text-leaf-800 font-bold block">{t.harvestGreenLabel}</span>
               <span className="text-base font-bold text-leaf-900">{greenPct}%</span>
             </div>
           </div>
@@ -190,10 +195,10 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
           type="submit"
           isLoading={isSaving}
           isSuccess={isSuccess}
-          loadingText="Guardando pesaje en báscula..."
-          successText="¡Pesaje registrado con éxito!"
+          loadingText={t.harvestScaleSaving}
+          successText={t.harvestScaleSuccessMsg}
         >
-          <span>Confirmar y Guardar Pesaje</span>
+          <span>{t.harvestScaleSaveBtn}</span>
           <ArrowRight className="w-4 h-4 text-amber-200" />
         </FeedbackButton>
       </form>
@@ -207,9 +212,9 @@ export const Screen5RegisterHarvest: React.FC<Props> = ({ onNavigate, onAddHarve
       {/* 6. Navegación Inferior */}
       <ScreenFooterNav
         onBack={() => onNavigate('SCREEN_21')}
-        backLabel="Atrás"
+        backLabel={t.prev}
         onNext={() => onNavigate('SCREEN_11')}
-        nextLabel="Siguiente"
+        nextLabel={t.next}
       />
     </div>
   );

@@ -2,26 +2,34 @@ import React from 'react';
 import { HarvestRecord } from '../../../types';
 import { Scale } from 'lucide-react';
 import { EmptyState } from '../../common/EmptyState';
+import { useLanguage } from '../../../context/LanguageContext';
 
 interface Props {
   records: HarvestRecord[];
 }
 
 export const HarvestHistoryFeed: React.FC<Props> = ({ records }) => {
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
+
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-xs px-1">
         <span className="font-bold uppercase tracking-wider text-coffee-700">
-          Pesajes Registrados Hoy
+          {t.harvestRecentTitle}
         </span>
-        <span className="text-coffee-500 font-semibold">{records.length} registros</span>
+        <span className="text-coffee-500 font-semibold">
+          {records.length} {isEn ? 'entries' : 'registros'}
+        </span>
       </div>
 
       {records.length === 0 ? (
         <EmptyState
           icon={Scale}
-          title="Sin pesajes registrados hoy"
-          description="Aún no se han anotado viajes de cosecha hoy. Usa el formulario arriba para registrar el primer pesaje."
+          title={isEn ? "No weigh-ins logged today" : "Sin pesajes registrados hoy"}
+          description={isEn
+            ? "No harvest batches logged today yet. Use the scale form above to log the first batch."
+            : "Aún no se han anotado viajes de cosecha hoy. Usa el formulario arriba para registrar el primer pesaje."}
         />
       ) : (
         <div className="space-y-2">
@@ -40,7 +48,7 @@ export const HarvestHistoryFeed: React.FC<Props> = ({ records }) => {
                 <div className="text-[11px] text-coffee-500 mt-0.5 flex items-center gap-2">
                   <span>{rec.time}</span>
                   <span>·</span>
-                  <span>{rec.ripePct}% maduras</span>
+                  <span>{rec.ripePct}% {t.harvestRipeLabel.toLowerCase()}</span>
                 </div>
               </div>
               <div className="text-right">

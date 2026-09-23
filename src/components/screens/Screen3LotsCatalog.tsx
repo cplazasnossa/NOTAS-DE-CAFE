@@ -25,8 +25,7 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { filter, setFilter, search, setSearch, filteredLots, counts, resetFilters } = useLotFilters(lots);
-  const { language } = useLanguage();
-  const isEn = language === 'en';
+  const { t } = useLanguage();
 
   const handleSelectLot = (lot: CoffeeLot) => {
     if (onSelectLot) {
@@ -52,11 +51,11 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Encabezado principal */}
       <ScreenHeader
-        title={isEn ? "Lot Names" : "Nombre de Lotes"}
-        subtitle={isEn ? "Agronomic management, varieties and maturity" : "Manejo agronómico, variedades y maduración"}
+        title={t.lotsCatalogTitle}
+        subtitle={t.lotsCatalogSubtitle}
         showBack={true}
         onBack={() => onNavigate('SCREEN_21')}
-        backLabel={isEn ? "Back to Farm" : "Volver a Mi Finca"}
+        backLabel={t.backToFarm}
         icon={<Layers className="w-5 h-5 text-coffee-800" />}
       />
 
@@ -66,7 +65,7 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
         className="w-full min-h-[48px] bg-coffee-800 hover:bg-coffee-900 text-white rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.98] cursor-pointer"
       >
         <PlusCircle className="w-4 h-4 text-amber-200" />
-        <span>+ Registrar Nuevo Lote</span>
+        <span>{t.lotsNewLotBtn}</span>
       </button>
 
       {/* 3. Filtros de búsqueda y estados */}
@@ -82,9 +81,9 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
       <div className="space-y-3">
         {filteredLots.length === 0 ? (
           <EmptyState
-            title="No se encontraron lotes"
-            description="Intenta buscar con otro término de variedad o ajusta los filtros de estado."
-            actionLabel="Restablecer filtros"
+            title={t.lotsEmptyTitle}
+            description={t.lotsEmptyDesc}
+            actionLabel={t.lotsResetFilters}
             onAction={resetFilters}
           />
         ) : (
@@ -106,10 +105,10 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
           type="button"
           onClick={() => onNavigate('SCREEN_21')}
           className="flex-1 min-h-[46px] py-2.5 px-3 bg-white hover:bg-coffee-100 text-coffee-800 border border-coffee-300 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-98"
-          title="Volver a Mi Finca (Pantalla 2)"
+          title={t.backToFarm}
         >
           <ArrowLeft className="w-4 h-4 text-coffee-600 shrink-0" />
-          <span className="truncate">Volver a Mi Finca</span>
+          <span className="truncate">{t.backToFarm}</span>
         </button>
 
         <button
@@ -121,9 +120,9 @@ export const Screen3LotsCatalog: React.FC<Props> = ({
             onNavigate('SCREEN_23');
           }}
           className="flex-1 min-h-[46px] py-2.5 px-3 bg-coffee-800 hover:bg-coffee-900 text-white rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md active:scale-98"
-          title="Ir a Ficha del Lote (Pantalla 4)"
+          title={t.lotsGoToProfile}
         >
-          <span className="truncate">Ir a Ficha del Lote</span>
+          <span className="truncate">{t.lotsGoToProfile}</span>
           <ArrowRight className="w-4 h-4 text-amber-200 shrink-0" />
         </button>
       </div>

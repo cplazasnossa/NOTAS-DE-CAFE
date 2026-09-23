@@ -39,7 +39,7 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline }) => {
         <div className="absolute top-3 left-4 right-4 flex items-center justify-between z-10">
           <span className="bg-[#2A150B]/85 backdrop-blur-xs text-[#FAF5EE] border border-[#5A311B]/60 px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide shadow-sm flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-leaf-500 animate-pulse" />
-            <span>Cosecha 2024 · Lote La Loma</span>
+            <span>{t.welcomeHarvestStatus}</span>
           </span>
         </div>
 
@@ -48,7 +48,7 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline }) => {
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#FAF6F0]/95 backdrop-blur-xs border border-coffee-300/90 mb-1.5 shadow-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#140702]" />
             <p className="text-[11px] sm:text-xs uppercase font-black tracking-wider text-[#140702]">
-              {isEn ? 'THE DIGITAL NOTEBOOK FOR YOUR FARM' : 'EL CUADERNO DIGITAL DE TU FINCA'}
+              {t.welcomeTagline}
             </p>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif font-extrabold text-[#140702] leading-tight">
@@ -73,7 +73,7 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline }) => {
               <div className="flex items-center gap-2">
                 <span className="text-base font-bold text-coffee-900">{t.welcomeWeatherTitle}</span>
                 <span className="text-[10px] bg-leaf-100 text-leaf-700 px-1.5 py-0.5 rounded font-bold">
-                  {isEn ? 'Optimal' : 'Óptimo'}
+                  {t.welcomeOptimal}
                 </span>
               </div>
               <p className="text-xs text-coffee-600">{t.welcomeWeatherDesc}</p>
@@ -81,10 +81,10 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline }) => {
           </div>
           <div className="text-right border-l border-coffee-100 pl-3 shrink-0">
             <span className="text-xs font-bold text-coffee-800 block">
-              {isEn ? 'Oct 14' : '14 Octubre'}
+              {t.welcomeDate}
             </span>
             <span className="text-[11px] text-coffee-500">
-              {isEn ? 'Week 41' : 'Semana 41'}
+              {t.welcomeWeek}
             </span>
           </div>
         </div>
@@ -161,7 +161,7 @@ export const Screen1Welcome: React.FC<Props> = ({ onNavigate, isOffline }) => {
             <ChevronRight className="w-5 h-5 text-amber-200" />
           </button>
           <p className="text-center text-[11px] text-coffee-500 mt-2">
-            {isEn ? 'Automatic local persistence · 100% cellular coverage-free' : 'Persistencia local automática · 100% libre de cobertura celular'}
+            {t.welcomeLocalNote}
           </p>
         </div>
       </div>

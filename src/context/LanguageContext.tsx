@@ -17,7 +17,13 @@ export interface Translations {
   next: string;
   prev: string;
   allScreens: string;
-  screenOf: string; // e.g. "de 9"
+  screenOf: string;
+  backToHome: string;
+  backToFarm: string;
+  backToLots: string;
+  backToRecord: string;
+  fieldModeAlert: string;
+  savedLocal: string;
 
   // Tab Bar
   tabHome: string;
@@ -41,6 +47,12 @@ export interface Translations {
   welcomeActiveLots: string;
   welcomeActiveCut: string;
   welcomePendingTasks: string;
+  welcomeTagline: string;
+  welcomeHarvestStatus: string;
+  welcomeOptimal: string;
+  welcomeDate: string;
+  welcomeWeek: string;
+  welcomeLocalNote: string;
 
   // Screen 2: Dashboard
   dashTitle: string;
@@ -62,6 +74,19 @@ export interface Translations {
   dashActionCulturalTask: string;
   dashActionSanitaryInspect: string;
   dashActionNewTask: string;
+  dashGoalLabel: string;
+  dashGoalStatus: string;
+  dashFirstGrade: string;
+  dashCrews: string;
+  dashActiveLotName: string;
+  dashLastWeighin: string;
+  dashOpenScaleBtn: string;
+  dashLotStatusTitle: string;
+  dashLotStatusSubtitle: string;
+  dashAddLotBtn: string;
+  dashViewLotsBtn: string;
+  dashHarvestingStatus: string;
+  dashOptimalStatus: string;
 
   // Screen 3: Lots Catalog
   lotsCatalogTitle: string;
@@ -71,6 +96,7 @@ export interface Translations {
   lotsFilterHarvest: string;
   lotsFilterFlower: string;
   lotsFilterMaintenance: string;
+  lotsFilterOptimal: string;
   lotsArea: string;
   lotsTrees: string;
   lotsAltitude: string;
@@ -79,6 +105,32 @@ export interface Translations {
   lotsHealth: string;
   lotsViewProfile: string;
   lotsNewLotBtn: string;
+  lotCardAreaTrees: string;
+  lotCardBrix: string;
+  lotCardFlowering: string;
+  lotCardWeighBtn: string;
+  lotCardProfile: string;
+  lotsEmptyTitle: string;
+  lotsEmptyDesc: string;
+  lotsResetFilters: string;
+  lotsGoToProfile: string;
+
+  // New Lot Modal
+  newLotModalTitle: string;
+  newLotModalSubtitle: string;
+  newLotNameLabel: string;
+  newLotNamePlaceholder: string;
+  newLotVarietyLabel: string;
+  newLotAreaLabel: string;
+  newLotAltitudeLabel: string;
+  newLotTreesLabel: string;
+  newLotStatusLabel: string;
+  newLotBrixLabel: string;
+  newLotNotesLabel: string;
+  newLotNotesPlaceholder: string;
+  newLotSaveBtn: string;
+  newLotSaving: string;
+  newLotSaved: string;
 
   // Screen 4: Lot Profile
   lotProfileTitle: string;
@@ -88,17 +140,28 @@ export interface Translations {
   lotProfilePlantedYear: string;
   lotProfileSensoryNotes: string;
   lotProfileRecentRecords: string;
+  lotDetailTabBrix: string;
+  lotDetailTabHealth: string;
+  lotDetailTabActivities: string;
+  lotDetailWeighAction: string;
 
   // Screen 5: Harvest Scale
   harvestScaleTitle: string;
   harvestScaleSubtitle: string;
+  harvestScaleCategory: string;
   harvestScalePicker: string;
   harvestScaleLot: string;
   harvestScaleGrossKg: string;
   harvestScaleNetArrobas: string;
   harvestScaleRipeQuality: string;
   harvestScaleSaveBtn: string;
+  harvestScaleSaving: string;
   harvestScaleSuccessMsg: string;
+  harvestRipeLabel: string;
+  harvestSemiRipeLabel: string;
+  harvestGreenLabel: string;
+  harvestRecentTitle: string;
+  harvestQuickActions: string;
 
   // Screen 6: Record Cost
   costTitle: string;
@@ -108,37 +171,65 @@ export interface Translations {
   costDescription: string;
   costLotOptional: string;
   costSaveBtn: string;
+  costSaving: string;
   costSuccessMsg: string;
+  costRecentTitle: string;
+  costCategoryWages: string;
+  costCategoryFertilizer: string;
+  costCategoryTransport: string;
+  costCategoryProcessing: string;
+  costCategoryFuel: string;
 
   // Screen 7: Cultural Activity
   activityTitle: string;
   activitySubtitle: string;
+  activityCategory: string;
   activityType: string;
   activityLot: string;
   activityWorkers: string;
   activityProgress: string;
+  activityTools: string;
   activitySaveBtn: string;
+  activitySaving: string;
   activitySuccessMsg: string;
+  activityRecentTitle: string;
 
   // Screen 8: Observation / Health
   healthTitle: string;
   healthSubtitle: string;
+  healthCategory: string;
   healthPestType: string;
   healthIncidence: string;
   healthBranches: string;
+  healthSeverity: string;
   healthActionReq: string;
   healthSaveBtn: string;
+  healthSaving: string;
   healthSuccessMsg: string;
+  healthRecentTitle: string;
+  healthSeverityLow: string;
+  healthSeverityMed: string;
+  healthSeverityHigh: string;
 
   // Screen 9: Tasks / Agenda
   agendaTitle: string;
   agendaSubtitle: string;
+  agendaCategory: string;
   agendaNewTaskBtn: string;
+  agendaTaskTitle: string;
+  agendaTaskTitlePlaceholder: string;
+  agendaPriorityLabel: string;
+  agendaCategoryLabel: string;
+  agendaAssigneeLabel: string;
+  agendaDueLabel: string;
   agendaPendingLabel: string;
   agendaCompletedLabel: string;
   agendaPriorityHigh: string;
   agendaPriorityMedium: string;
   agendaPriorityLow: string;
+  agendaCreateBtn: string;
+  agendaCreating: string;
+  agendaCreated: string;
 
   // Showcase Landing Page
   heroTag: string;
@@ -165,8 +256,8 @@ export const ES_TRANSLATIONS: Translations = {
   simulatorMode: 'Simulador Móvil',
   backToShowcase: '← Volver al Showcase',
   mobileSimulatorTitle: 'Simulador 390px (Mobile First)',
-  online: 'Online',
-  offline: 'Offline',
+  online: 'En Línea',
+  offline: 'Sin Conexión',
   synchronized: 'Sincronizado',
   offlineMode: 'Modo Offline',
   guideBtn: 'Guía 9 Pantallas',
@@ -176,6 +267,12 @@ export const ES_TRANSLATIONS: Translations = {
   prev: 'Anterior',
   allScreens: 'Ecosistema Completo de 9 Pantallas',
   screenOf: 'de 9',
+  backToHome: 'Volver al Inicio',
+  backToFarm: 'Volver a Mi Finca',
+  backToLots: 'Volver a Lotes',
+  backToRecord: 'Volver a Registro',
+  fieldModeAlert: 'Modo Campo: Operando sin señal celular',
+  savedLocal: 'Local OK',
 
   tabHome: 'Inicio',
   tabFarm: 'Finca',
@@ -197,9 +294,15 @@ export const ES_TRANSLATIONS: Translations = {
   welcomeActiveLots: '4 Activos',
   welcomeActiveCut: 'Corte Geisha',
   welcomePendingTasks: '3 Pendientes',
+  welcomeTagline: 'EL CUADERNO DIGITAL DE TU FINCA',
+  welcomeHarvestStatus: 'Cosecha 2024 · Lote La Loma',
+  welcomeOptimal: 'Óptimo',
+  welcomeDate: '14 Octubre',
+  welcomeWeek: 'Semana 41',
+  welcomeLocalNote: 'Persistencia local automática · 100% libre de cobertura celular',
 
   dashTitle: 'Finca El Manantial',
-  dashSubtitle: 'Resumen Agronómico',
+  dashSubtitle: 'Panel central de control agronómico · Finca El Manantial',
   dashCaption: 'Cosecha 2024 · Floración 85%',
   dashTodayHarvest: '142 Arrobas Hoy',
   dashVsLastWeek: '+18% vs semana previa',
@@ -217,14 +320,28 @@ export const ES_TRANSLATIONS: Translations = {
   dashActionCulturalTask: 'Labor Cultural',
   dashActionSanitaryInspect: 'Sanidad Vegetal',
   dashActionNewTask: 'Nueva Tarea',
+  dashGoalLabel: 'Meta del día:',
+  dashGoalStatus: '88.7% completado (Faltan 18 @)',
+  dashFirstGrade: 'Cereza 1ª',
+  dashCrews: '2 Cuadrillas',
+  dashActiveLotName: 'La Loma #1',
+  dashLastWeighin: 'Último pesaje:',
+  dashOpenScaleBtn: 'Abrir Báscula de Pesaje Rápido en Campo',
+  dashLotStatusTitle: 'Estado de los Lotes',
+  dashLotStatusSubtitle: '18.5 Hectáreas bajo manejo agronómico',
+  dashAddLotBtn: '+ Lote',
+  dashViewLotsBtn: 'Ver Lotes',
+  dashHarvestingStatus: 'En Cosecha',
+  dashOptimalStatus: 'Óptimo',
 
-  lotsCatalogTitle: 'Mis Lotes (Catastro)',
-  lotsCatalogSubtitle: '4 lotes georreferenciados en producción',
-  lotsSearchPlaceholder: 'Buscar lote o variedad (ej: Geisha, Bourbon)...',
+  lotsCatalogTitle: 'Nombre de Lotes',
+  lotsCatalogSubtitle: 'Manejo agronómico, variedades y maduración',
+  lotsSearchPlaceholder: 'Buscar lote por nombre o variedad...',
   lotsFilterAll: 'Todos',
   lotsFilterHarvest: 'En Cosecha',
   lotsFilterFlower: 'Floración',
   lotsFilterMaintenance: 'Mantenimiento',
+  lotsFilterOptimal: 'Óptimos',
   lotsArea: 'Área',
   lotsTrees: 'Árboles',
   lotsAltitude: 'Altitud',
@@ -232,61 +349,125 @@ export const ES_TRANSLATIONS: Translations = {
   lotsFlowering: 'Floración',
   lotsHealth: 'Sanidad',
   lotsViewProfile: 'Ver Ficha Completa →',
-  lotsNewLotBtn: '+ Nuevo Lote',
+  lotsNewLotBtn: '+ Registrar Nuevo Lote',
+  lotCardAreaTrees: 'Área & Árboles',
+  lotCardBrix: 'Grados Brix',
+  lotCardFlowering: 'Floración',
+  lotCardWeighBtn: 'Pesar',
+  lotCardProfile: 'Ficha',
+  lotsEmptyTitle: 'No se encontraron lotes',
+  lotsEmptyDesc: 'Intenta buscar con otro término de variedad o ajusta los filtros de estado.',
+  lotsResetFilters: 'Restablecer filtros',
+  lotsGoToProfile: 'Ir a Ficha del Lote',
 
-  lotProfileTitle: 'Ficha del Lote',
+  newLotModalTitle: 'Registrar Nuevo Lote',
+  newLotModalSubtitle: 'Alta agronómica en el cuaderno de la finca',
+  newLotNameLabel: 'Nombre del Lote *',
+  newLotNamePlaceholder: 'Ej: Lote El Porvenir',
+  newLotVarietyLabel: 'Variedad de Café',
+  newLotAreaLabel: 'Área en Hectáreas *',
+  newLotAltitudeLabel: 'Altitud (msnm)',
+  newLotTreesLabel: 'Número Estimado de Árboles',
+  newLotStatusLabel: 'Estado Fenológico Inicial',
+  newLotBrixLabel: 'Grados °Brix Promedio',
+  newLotNotesLabel: 'Notas u Observaciones Agronómicas',
+  newLotNotesPlaceholder: 'Detalles del suelo, pendiente, sombrío o fecha estimada de siembra...',
+  newLotSaveBtn: 'Guardar Lote en el Cuaderno',
+  newLotSaving: 'Guardando lote agronómico...',
+  newLotSaved: '¡Lote registrado con éxito!',
+
+  lotProfileTitle: 'Ficha de Lote',
   lotProfileRipeningCurve: 'Curva de Maduración y Grados °Brix',
   lotProfileAgronomicSpecs: 'Especificaciones Agronómicas',
   lotProfileVariety: 'Variedad Botánica',
   lotProfilePlantedYear: 'Año de Siembra',
   lotProfileSensoryNotes: 'Notas Sensoriales en Taza',
   lotProfileRecentRecords: 'Historial Reciente del Cafetal',
+  lotDetailTabBrix: 'Curva Brix & Cosecha',
+  lotDetailTabHealth: 'Sanidad Vegetal',
+  lotDetailTabActivities: 'Labores & Podas',
+  lotDetailWeighAction: 'Registrar Pesaje para',
 
-  harvestScaleTitle: 'Registrar Cosecha',
-  harvestScaleSubtitle: 'Báscula de Pesaje Diario',
+  harvestScaleTitle: 'Báscula de Cosecha',
+  harvestScaleSubtitle: 'Control diario de pesaje en báscula de campo',
+  harvestScaleCategory: 'Cosecha y Báscula',
   harvestScalePicker: 'Recolector / Jornalero',
-  harvestScaleLot: 'Lote de Recolección',
-  harvestScaleGrossKg: 'Peso Bruto (Kg)',
+  harvestScaleLot: 'Lote de Procedencia',
+  harvestScaleGrossKg: 'Peso Báscula de Campo',
   harvestScaleNetArrobas: 'Arrobas Calculadas (@)',
-  harvestScaleRipeQuality: 'Selección de Grano (% Maduro)',
-  harvestScaleSaveBtn: 'Guardar Pesaje en Báscula',
-  harvestScaleSuccessMsg: '¡Pesaje registrado exitosamente!',
+  harvestScaleRipeQuality: 'Calidad del Grano Cosechado',
+  harvestScaleSaveBtn: 'Confirmar y Guardar Pesaje',
+  harvestScaleSaving: 'Guardando pesaje en báscula...',
+  harvestScaleSuccessMsg: '¡Pesaje registrado con éxito!',
+  harvestRipeLabel: 'Maduras',
+  harvestSemiRipeLabel: 'Pintonas',
+  harvestGreenLabel: 'Verdes',
+  harvestRecentTitle: 'Últimos Pesajes de Hoy',
+  harvestQuickActions: 'Accesos Rápidos de Campo',
 
-  costTitle: 'Registrar Costo',
-  costSubtitle: 'Control Financiero de Campo',
-  costCategory: 'Categoría del Gasto',
-  costAmount: 'Monto en Pesos (COP)',
+  costTitle: 'Registro de Costos',
+  costSubtitle: 'Control de egresos, jornales y compras de insumos',
+  costCategory: 'Finanzas de Campo',
+  costAmount: 'Monto en Pesos Colombianos (COP)',
   costDescription: 'Descripción del Gasto',
   costLotOptional: 'Lote Asociado (Opcional)',
-  costSaveBtn: 'Guardar Registro de Costo',
+  costSaveBtn: 'Confirmar y Guardar Costo',
+  costSaving: 'Guardando registro contable...',
   costSuccessMsg: '¡Costo registrado con éxito!',
+  costRecentTitle: 'Egresos Registrados Hoy',
+  costCategoryWages: 'Jornales de Recolección',
+  costCategoryFertilizer: 'Fertilizantes y Abonos',
+  costCategoryTransport: 'Transporte y Flete',
+  costCategoryProcessing: 'Beneficio y Secado',
+  costCategoryFuel: 'Combustible y Mantenimiento',
 
-  activityTitle: 'Registrar Actividad Cultural',
-  activitySubtitle: 'Manejo Agronómico del Cafetal',
-  activityType: 'Labor Agronómica',
+  activityTitle: 'Labores Culturales',
+  activitySubtitle: 'Registro de podas, desyerbe, fertilización y sombrío',
+  activityCategory: 'Manejo del Cultivo',
+  activityType: 'Tipo de Labor Agronómica',
   activityLot: 'Lote Intervenido',
-  activityWorkers: 'Número de Trabajadores',
-  activityProgress: 'Progreso de la Labor',
-  activitySaveBtn: 'Guardar Actividad Agronómica',
-  activitySuccessMsg: '¡Actividad guardada en el cuaderno!',
+  activityWorkers: 'Operarios Asignados',
+  activityProgress: 'Porcentaje de Avance',
+  activityTools: 'Herramientas e Insumos Utilizados',
+  activitySaveBtn: 'Registrar Labor Agronómica',
+  activitySaving: 'Guardando labor en cuaderno...',
+  activitySuccessMsg: '¡Labor registrada con éxito!',
+  activityRecentTitle: 'Labores Ejecutadas Recientemente',
 
-  healthTitle: 'Registrar Observación Sanitaria',
-  healthSubtitle: 'Monitoreo Fitosanitario & Plagas',
-  healthPestType: 'Plaga o Enfermedad',
+  healthTitle: 'Sanidad & Plagas',
+  healthSubtitle: 'Monitoreo fitosanitario y alertas tempranas',
+  healthCategory: 'Fitosanidad',
+  healthPestType: 'Plaga / Enfermedad Detectada',
   healthIncidence: 'Porcentaje de Incidencia',
   healthBranches: 'Ramas Evaluadas',
-  healthActionReq: 'Acción Correctiva Sugerida',
-  healthSaveBtn: 'Guardar Inspección Sanitaria',
+  healthSeverity: 'Nivel de Severidad',
+  healthActionReq: 'Acción Inmediata Requerida',
+  healthSaveBtn: 'Guardar Observación Fitosanitaria',
+  healthSaving: 'Guardando alerta fitosanitaria...',
   healthSuccessMsg: '¡Alerta fitosanitaria registrada!',
+  healthRecentTitle: 'Alertas Sanitarias Activas',
+  healthSeverityLow: 'Baja',
+  healthSeverityMed: 'Media',
+  healthSeverityHigh: 'Alta',
 
-  agendaTitle: 'Tareas y Recordatorios',
-  agendaSubtitle: 'Agenda de Campo del Mayordomo',
+  agendaTitle: 'Agenda de Tareas',
+  agendaSubtitle: 'Plan de trabajo y pendientes del mayordomo',
+  agendaCategory: 'Agenda de Finca',
   agendaNewTaskBtn: '+ Nueva Tarea',
-  agendaPendingLabel: 'Pendientes',
-  agendaCompletedLabel: 'Completadas',
+  agendaTaskTitle: 'Descripción de la Tarea *',
+  agendaTaskTitlePlaceholder: 'Ej: Revisión de mangueras de despulpadora',
+  agendaPriorityLabel: 'Nivel de Prioridad',
+  agendaCategoryLabel: 'Área / Categoría',
+  agendaAssigneeLabel: 'Responsable Asignado',
+  agendaDueLabel: 'Plazo de Entrega',
+  agendaPendingLabel: 'Tareas Pendientes',
+  agendaCompletedLabel: 'Tareas Completadas',
   agendaPriorityHigh: 'Alta Prioridad',
   agendaPriorityMedium: 'Media',
   agendaPriorityLow: 'Baja',
+  agendaCreateBtn: 'Crear y Agendar Tarea',
+  agendaCreating: 'Agendando tarea...',
+  agendaCreated: '¡Tarea creada con éxito!',
 
   heroTag: 'PROTOTIPO INTERACTIVO · 9 PANTALLAS',
   heroHeadline: 'Notas de Café: El Cuaderno Inteligente de Campo',
@@ -323,6 +504,12 @@ export const EN_TRANSLATIONS: Translations = {
   prev: 'Previous',
   allScreens: 'Complete 9-Screen Ecosystem',
   screenOf: 'of 9',
+  backToHome: 'Back to Home',
+  backToFarm: 'Back to Farm',
+  backToLots: 'Back to Lots',
+  backToRecord: 'Back to Record',
+  fieldModeAlert: 'Field Mode: Working offline without cell coverage',
+  savedLocal: 'Local OK',
 
   tabHome: 'Home',
   tabFarm: 'Farm',
@@ -344,9 +531,15 @@ export const EN_TRANSLATIONS: Translations = {
   welcomeActiveLots: '4 Active',
   welcomeActiveCut: 'Geisha Harvest',
   welcomePendingTasks: '3 Pending',
+  welcomeTagline: 'THE DIGITAL NOTEBOOK FOR YOUR FARM',
+  welcomeHarvestStatus: 'Harvest 2024 · La Loma Lot',
+  welcomeOptimal: 'Optimal',
+  welcomeDate: 'Oct 14',
+  welcomeWeek: 'Week 41',
+  welcomeLocalNote: 'Automatic local persistence · 100% cellular coverage-free',
 
   dashTitle: 'El Manantial Farm',
-  dashSubtitle: 'Agronomic Summary',
+  dashSubtitle: 'Central agronomic control panel · El Manantial Farm',
   dashCaption: 'Harvest 2024 · 85% Flowering',
   dashTodayHarvest: '142 Arrobas Today',
   dashVsLastWeek: '+18% vs previous week',
@@ -364,14 +557,28 @@ export const EN_TRANSLATIONS: Translations = {
   dashActionCulturalTask: 'Cultural Task',
   dashActionSanitaryInspect: 'Crop Health',
   dashActionNewTask: 'New Task',
+  dashGoalLabel: 'Daily Goal:',
+  dashGoalStatus: '88.7% completed (18 @ left)',
+  dashFirstGrade: '1st Grade',
+  dashCrews: '2 Crews',
+  dashActiveLotName: 'La Loma #1',
+  dashLastWeighin: 'Last weigh-in:',
+  dashOpenScaleBtn: 'Open Rapid Field Harvest Scale',
+  dashLotStatusTitle: 'Lot Status',
+  dashLotStatusSubtitle: '18.5 Hectares under agronomic management',
+  dashAddLotBtn: '+ Lot',
+  dashViewLotsBtn: 'View Lots',
+  dashHarvestingStatus: 'Harvesting',
+  dashOptimalStatus: 'Optimal',
 
-  lotsCatalogTitle: 'My Lots (Cadastre)',
-  lotsCatalogSubtitle: '4 georeferenced lots in production',
-  lotsSearchPlaceholder: 'Search lot or variety (e.g., Geisha, Bourbon)...',
+  lotsCatalogTitle: 'Lot Names',
+  lotsCatalogSubtitle: 'Agronomic management, varieties, and maturity',
+  lotsSearchPlaceholder: 'Search lot by name or variety...',
   lotsFilterAll: 'All',
   lotsFilterHarvest: 'Harvesting',
   lotsFilterFlower: 'Flowering',
   lotsFilterMaintenance: 'Maintenance',
+  lotsFilterOptimal: 'Optimal',
   lotsArea: 'Area',
   lotsTrees: 'Trees',
   lotsAltitude: 'Altitude',
@@ -379,7 +586,32 @@ export const EN_TRANSLATIONS: Translations = {
   lotsFlowering: 'Flowering',
   lotsHealth: 'Health',
   lotsViewProfile: 'View Full Profile →',
-  lotsNewLotBtn: '+ New Lot',
+  lotsNewLotBtn: '+ Register New Lot',
+  lotCardAreaTrees: 'Area & Trees',
+  lotCardBrix: 'Brix Degrees',
+  lotCardFlowering: 'Flowering',
+  lotCardWeighBtn: 'Weigh',
+  lotCardProfile: 'Profile',
+  lotsEmptyTitle: 'No lots found',
+  lotsEmptyDesc: 'Try searching with another variety term or adjust the status filters.',
+  lotsResetFilters: 'Reset filters',
+  lotsGoToProfile: 'Go to Lot Profile',
+
+  newLotModalTitle: 'Register New Lot',
+  newLotModalSubtitle: 'Agronomic setup in the farm notebook',
+  newLotNameLabel: 'Lot Name *',
+  newLotNamePlaceholder: 'E.g., El Porvenir Lot',
+  newLotVarietyLabel: 'Coffee Variety',
+  newLotAreaLabel: 'Area in Hectares *',
+  newLotAltitudeLabel: 'Altitude (masl)',
+  newLotTreesLabel: 'Estimated Number of Trees',
+  newLotStatusLabel: 'Initial Phenological Status',
+  newLotBrixLabel: 'Average °Brix Degrees',
+  newLotNotesLabel: 'Agronomic Notes or Observations',
+  newLotNotesPlaceholder: 'Soil details, slope, shade trees, or planting date...',
+  newLotSaveBtn: 'Save Lot to Notebook',
+  newLotSaving: 'Saving agronomic lot...',
+  newLotSaved: 'Lot registered successfully!',
 
   lotProfileTitle: 'Lot Profile',
   lotProfileRipeningCurve: 'Ripening Curve & °Brix Degrees',
@@ -388,52 +620,91 @@ export const EN_TRANSLATIONS: Translations = {
   lotProfilePlantedYear: 'Planted Year',
   lotProfileSensoryNotes: 'Cup Sensory Notes',
   lotProfileRecentRecords: 'Recent Field History',
+  lotDetailTabBrix: 'Brix Curve & Harvest',
+  lotDetailTabHealth: 'Plant Health',
+  lotDetailTabActivities: 'Labor & Pruning',
+  lotDetailWeighAction: 'Register Weigh-in for',
 
-  harvestScaleTitle: 'Record Harvest',
-  harvestScaleSubtitle: 'Daily Weighing Scale',
-  harvestScalePicker: 'Coffee Picker / Worker',
-  harvestScaleLot: 'Harvest Lot',
-  harvestScaleGrossKg: 'Gross Weight (Kg)',
+  harvestScaleTitle: 'Harvest Scale',
+  harvestScaleSubtitle: 'Daily scale harvest weigh-in control',
+  harvestScaleCategory: 'Harvest & Scale',
+  harvestScalePicker: 'Coffee Picker / Day Laborer',
+  harvestScaleLot: 'Source Lot',
+  harvestScaleGrossKg: 'Field Scale Weight',
   harvestScaleNetArrobas: 'Calculated Arrobas (@)',
-  harvestScaleRipeQuality: 'Bean Quality (% Ripe)',
-  harvestScaleSaveBtn: 'Save Weight on Scale',
+  harvestScaleRipeQuality: 'Harvested Cherry Quality',
+  harvestScaleSaveBtn: 'Confirm & Save Weigh-in',
+  harvestScaleSaving: 'Saving weight on scale...',
   harvestScaleSuccessMsg: 'Weight recorded successfully!',
+  harvestRipeLabel: 'Ripe',
+  harvestSemiRipeLabel: 'Semi-ripe',
+  harvestGreenLabel: 'Green',
+  harvestRecentTitle: "Today's Recent Weigh-ins",
+  harvestQuickActions: 'Quick Field Actions',
 
-  costTitle: 'Record Cost',
-  costSubtitle: 'Field Expense Management',
-  costCategory: 'Expense Category',
-  costAmount: 'Amount in Pesos (COP)',
+  costTitle: 'Cost Registration',
+  costSubtitle: 'Expense tracking, wages, and farm inputs',
+  costCategory: 'Field Finances',
+  costAmount: 'Amount in Colombian Pesos (COP)',
   costDescription: 'Expense Description',
   costLotOptional: 'Associated Lot (Optional)',
-  costSaveBtn: 'Save Cost Entry',
-  costSuccessMsg: 'Cost recorded successfully!',
+  costSaveBtn: 'Confirm & Save Expense',
+  costSaving: 'Saving accounting record...',
+  costSuccessMsg: 'Cost registered successfully!',
+  costRecentTitle: 'Expenses Logged Today',
+  costCategoryWages: 'Harvest Wages',
+  costCategoryFertilizer: 'Fertilizers & Nutrients',
+  costCategoryTransport: 'Transport & Freight',
+  costCategoryProcessing: 'Processing & Drying',
+  costCategoryFuel: 'Fuel & Maintenance',
 
-  activityTitle: 'Record Cultural Activity',
-  activitySubtitle: 'Agronomic Field Operations',
-  activityType: 'Agronomic Task',
-  activityLot: 'Intervened Lot',
+  activityTitle: 'Agronomic Labor',
+  activitySubtitle: 'Record of pruning, weeding, fertilizing and shade management',
+  activityCategory: 'Crop Management',
+  activityType: 'Type of Agronomic Labor',
+  activityLot: 'Target Lot',
   activityWorkers: 'Assigned Workers',
-  activityProgress: 'Task Progress',
-  activitySaveBtn: 'Save Agronomic Activity',
-  activitySuccessMsg: 'Activity saved in notebook!',
+  activityProgress: 'Progress Percentage',
+  activityTools: 'Tools & Supplies Used',
+  activitySaveBtn: 'Save Agronomic Labor',
+  activitySaving: 'Saving labor in notebook...',
+  activitySuccessMsg: 'Labor registered successfully!',
+  activityRecentTitle: 'Recently Executed Labor',
 
-  healthTitle: 'Record Sanitary Inspection',
-  healthSubtitle: 'Crop Health & Pest Monitoring',
-  healthPestType: 'Pest or Disease',
+  healthTitle: 'Plant Health & Pests',
+  healthSubtitle: 'Phytosanitary monitoring and early alerts',
+  healthCategory: 'Phytosanitary',
+  healthPestType: 'Detected Pest / Disease',
   healthIncidence: 'Incidence Percentage',
   healthBranches: 'Sampled Branches',
-  healthActionReq: 'Recommended Action',
-  healthSaveBtn: 'Save Sanitary Inspection',
-  healthSuccessMsg: 'Crop health alert recorded!',
+  healthSeverity: 'Severity Level',
+  healthActionReq: 'Immediate Action Required',
+  healthSaveBtn: 'Save Phytosanitary Alert',
+  healthSaving: 'Saving phytosanitary alert...',
+  healthSuccessMsg: 'Phytosanitary alert registered!',
+  healthRecentTitle: 'Active Sanitary Alerts',
+  healthSeverityLow: 'Low',
+  healthSeverityMed: 'Medium',
+  healthSeverityHigh: 'High',
 
-  agendaTitle: 'Tasks & Reminders',
-  agendaSubtitle: "Foreman's Field Agenda",
+  agendaTitle: 'Daily Tasks Agenda',
+  agendaSubtitle: 'Work plan and foreman pending tasks',
+  agendaCategory: 'Farm Agenda',
   agendaNewTaskBtn: '+ New Task',
-  agendaPendingLabel: 'Pending',
-  agendaCompletedLabel: 'Completed',
+  agendaTaskTitle: 'Task Description *',
+  agendaTaskTitlePlaceholder: 'E.g., Inspection of depulper hoses',
+  agendaPriorityLabel: 'Priority Level',
+  agendaCategoryLabel: 'Area / Category',
+  agendaAssigneeLabel: 'Assigned Worker',
+  agendaDueLabel: 'Due Time',
+  agendaPendingLabel: 'Pending Tasks',
+  agendaCompletedLabel: 'Completed Tasks',
   agendaPriorityHigh: 'High Priority',
   agendaPriorityMedium: 'Medium',
   agendaPriorityLow: 'Low',
+  agendaCreateBtn: 'Create & Schedule Task',
+  agendaCreating: 'Scheduling task...',
+  agendaCreated: 'Task created successfully!',
 
   heroTag: 'INTERACTIVE PROTOTYPE · 9 SCREENS',
   heroHeadline: 'Notas de Café: The Smart Field Notebook',

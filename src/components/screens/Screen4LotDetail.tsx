@@ -7,6 +7,7 @@ import { LotOverviewHeader } from './lotDetail/LotOverviewHeader';
 import { BrixMaturityTab } from './lotDetail/BrixMaturityTab';
 import { SanitaryStatusTab } from './lotDetail/SanitaryStatusTab';
 import { CulturalActivitiesTab } from './lotDetail/CulturalActivitiesTab';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -18,17 +19,19 @@ export const Screen4LotDetail: React.FC<Props> = ({
   lot = INITIAL_LOTS[0]
 }) => {
   const [activeTab, setActiveTab] = useState<'maduracion' | 'sanidad' | 'historial'>('maduracion');
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   return (
     <div className="flex flex-col h-full bg-[#FAF6F0] text-coffee-900 pb-8 px-4 sm:px-5 pt-3 space-y-4 overflow-y-auto no-scrollbar">
       {/* 1. Header con botón Atrás */}
       <ScreenHeader
-        title={`Ficha de Lote: ${lot.name}`}
-        subtitle={`${lot.variety} · ${lot.altitudeMsnm} msnm · ${lot.areaHa} ha`}
-        category="Ficha de Lote"
+        title={`${t.lotProfileTitle}: ${lot.name}`}
+        subtitle={`${lot.variety} · ${lot.altitudeMsnm} ${isEn ? 'masl' : 'msnm'} · ${lot.areaHa} ha`}
+        category={t.lotProfileTitle}
         showBack={true}
         onBack={() => onNavigate('SCREEN_19')}
-        backLabel="Volver a Lotes"
+        backLabel={t.backToLots}
         icon={<Layers className="w-5 h-5 text-coffee-800" />}
       />
 
@@ -43,7 +46,7 @@ export const Screen4LotDetail: React.FC<Props> = ({
             activeTab === 'maduracion' ? 'bg-white text-coffee-900 shadow-sm' : 'text-coffee-600 hover:text-coffee-900'
           }`}
         >
-          Curva Brix & Cosecha
+          {t.lotDetailTabBrix}
         </button>
         <button
           onClick={() => setActiveTab('sanidad')}
@@ -51,7 +54,7 @@ export const Screen4LotDetail: React.FC<Props> = ({
             activeTab === 'sanidad' ? 'bg-white text-coffee-900 shadow-sm' : 'text-coffee-600 hover:text-coffee-900'
           }`}
         >
-          Sanidad Vegetal
+          {t.lotDetailTabHealth}
         </button>
         <button
           onClick={() => setActiveTab('historial')}
@@ -59,7 +62,7 @@ export const Screen4LotDetail: React.FC<Props> = ({
             activeTab === 'historial' ? 'bg-white text-coffee-900 shadow-sm' : 'text-coffee-600 hover:text-coffee-900'
           }`}
         >
-          Labores & Podas
+          {t.lotDetailTabActivities}
         </button>
       </div>
 
@@ -74,7 +77,7 @@ export const Screen4LotDetail: React.FC<Props> = ({
           onClick={() => onNavigate('SCREEN_13')}
           className="w-full min-h-[48px] bg-coffee-800 hover:bg-coffee-950 text-white rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer"
         >
-          <span>Registrar Pesaje para {lot.name} →</span>
+          <span>{t.lotDetailWeighAction} {lot.name} →</span>
         </button>
 
         <button
@@ -83,7 +86,7 @@ export const Screen4LotDetail: React.FC<Props> = ({
           className="w-full min-h-[46px] py-2.5 bg-white hover:bg-coffee-100 text-coffee-800 border border-coffee-300 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-98"
         >
           <ArrowLeft className="w-4 h-4 text-coffee-600" />
-          <span>Volver a Lotes</span>
+          <span>{t.backToLots}</span>
         </button>
       </div>
     </div>
